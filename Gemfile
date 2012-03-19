@@ -6,7 +6,9 @@ gem 'rails', '3.0.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem "mysql2", "0.2.7"
-
+gem "devise"
+gem "mongrel", ">=1.2.0.pre2"
+gem "rake", "0.8.7"
 # Use unicorn as the web server
 # gem 'unicorn'
 
