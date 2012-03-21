@@ -3,10 +3,37 @@
   <title>学生自动评分系统</title>
   <title>Pf</title>
   <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag 'Extjs/ext-base-debug.js' %>
+  <%= javascript_include_tag 'Extjs/ext-all-debug.js' %>
+  <%= javascript_include_tag 'Extjs/ext-lang-zh_CN.js' %>
+  <%= javascript_include_tag 'PF/public/init.js' %>
+  <%= javascript_include_tag 'PF/util/util.js' %>
+  <%= stylesheet_link_tag '/javascripts/Extjs/resources/css/ext-all.css' %>
+  <%#= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
 <body>
-<%= yield %>
+
+  <%= yield %>
+
+  <script language="javascript" type="text/javascript">
+      Ext.onReady(function(){
+          //提供给所有JS文件获取当前User的方法
+          // 这里添加一个判断是为了区分是否需要渲染JS文件，没有话不执行生成Ext.Viewport
+          if(Pf.pages.currentInstance){
+              var menuPanel = new Ext.Panel({
+                  height : 60,
+                  region : 'south',
+                  border : false
+              });
+
+              Pf.viewPage = new Ext.Viewport({
+                  layout : 'border',
+                  autoScroll : true,
+                  items : [ menuPanel, { region: 'center', items: Pf.pages.currentInstance }]
+              });
+          }
+      })
+  </script>
 </body>
 </html>

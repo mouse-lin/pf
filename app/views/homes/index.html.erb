@@ -1,3 +1,8 @@
-<h1>HEHE</h1>
-<%= link_to '退出', logout_path %>
-<p>Mouse</p>
+<%= javascript_include_tag '/javascripts/PF/pages/home_index.js' %>
+
+<script language="javascript" type="text/javascript">
+    Ext.onReady(function() { 
+        Pf.classes.homeIndex = new Pf.classes.homeIndex.MainPanel();
+        Pf.pages.currentInstance = Pf.classes.homeIndex;
+    });
+</script>
