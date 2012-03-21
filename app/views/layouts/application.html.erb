@@ -2,28 +2,62 @@
 <head>
   <title>学生自动评分系统</title>
   <title>Pf</title>
-  <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag 'Extjs/ext-base-debug.js' %>
   <%= javascript_include_tag 'Extjs/ext-all-debug.js' %>
   <%= javascript_include_tag 'Extjs/ext-lang-zh_CN.js' %>
   <%= javascript_include_tag 'PF/public/init.js' %>
   <%= javascript_include_tag 'PF/util/util.js' %>
+  <%= javascript_include_tag 'Jquery/jquery.js' %>
+  <%= javascript_include_tag 'Jquery/interface.js' %>
   <%= stylesheet_link_tag '/javascripts/Extjs/resources/css/ext-all.css' %>
   <%= stylesheet_link_tag '/javascripts/Extjs/resources/css/xtheme-gray.css' %>
-  <%#= javascript_include_tag :defaults %>
+  <%= stylesheet_link_tag 'menu-style.css' %>
   <%= csrf_meta_tag %>
 </head>
 <body>
+<script type="text/javascript">
+	$(document).ready(
+		function()
+		{
+			$('#dock2').Fisheye(
+				{
+					maxWidth: 60,
+					items: 'a',
+					itemsText: 'span',
+					container: '.dock-container2',
+					itemWidth: 40,
+					proximity: 80,
+					alignment : 'left',
+					valign: 'bottom',
+					halign : 'center'
+				}
+			)
+		}
+	);
+</script>
+<div class="dock" id="dock2">
+  <div class="dock-container2">
+	  <a class="dock-item2" href="#"><span>Home</span><img src="images/home.png" alt="home" /></a> 
+	  <a class="dock-item2" href="#"><span>Contact</span><img src="images/email.png" alt="contact" /></a> 
+	  <a class="dock-item2" href="#"><span>Portfolio</span><img src="images/portfolio.png" alt="portfolio" /></a> 
+	  <a class="dock-item2" href="#"><span>Music</span><img src="images/music.png" alt="music" /></a> 
+	  <a class="dock-item2" href="#"><span>Video</span><img src="images/video.png" alt="video" /></a> 
+	  <a class="dock-item2" href="#"><span>History</span><img src="images/history.png" alt="history" /></a> 
+	  <a class="dock-item2" href="#"><span>Calendar</span><img src="images/calendar.png" alt="calendar" /></a> 
+	  <a class="dock-item2" href="#"><span>Links</span><img src="images/link.png" alt="links" /></a> 
+	  <a class="dock-item2" href="#"><span>RSS</span><img src="images/rss.png" alt="rss" /></a> 
+	  <a class="dock-item2" href="#"><span>RSS2</span><img src="images/rss2.png" alt="rss" /></a> 
+  </div>
+</div>
 
-  <%= yield %>
-
+<%= yield %>
   <script language="javascript" type="text/javascript">
-      Ext.onReady(function(){
+     Ext.onReady(function(){
           //提供给所有JS文件获取当前User的方法
           // 这里添加一个判断是为了区分是否需要渲染JS文件，没有话不执行生成Ext.Viewport
           if(Pf.pages.currentInstance){
               var menuPanel = new Ext.Panel({
-                  height : 60,
+                  height : 50,
                   region : 'south',
                   border : false
               });
