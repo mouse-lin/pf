@@ -1,0 +1,376 @@
+# Chinese (China) translations for Ruby on Rails
+# by tsechingho (http://github.com/tsechingho)
+
+zh-CN:
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b%d日"
+      long: "%Y年%b%d日"
+    day_names: [星期日, 星期一, 星期二, 星期三, 星期四, 星期五, 星期六]
+    abbr_day_names: [日, 一, 二, 三, 四, 五, 六]
+    month_names: [~, 一月, 二月, 三月, 四月, 五月, 六月, 七月, 八月, 九月, 十月, 十一月, 十二月]
+    abbr_month_names: [~, 1月, 2月, 3月, 4月, 5月, 6月, 7月, 8月, 9月, 10月, 11月, 12月]
+    order: [ :year, :month, :day ]
+
+  time:
+    formats:
+      default: "%Y年%b%d日 %A %H:%M:%S %Z"
+      short: "%b%d日 %H:%M"
+      long: "%Y年%b%d日 %H:%M"
+    am: "上午"
+    pm: "下午"
+
+  datetime:
+    distance_in_words:
+      half_a_minute: "半分钟"
+      less_than_x_seconds:
+        one: "不到一秒"
+        other: "不到 %{count} 秒"
+      x_seconds:
+        one: "一秒"
+        other: "%{count} 秒"
+      less_than_x_minutes:
+        one: "不到一分钟"
+        other: "不到 %{count} 分钟"
+      x_minutes:
+        one: "一分钟"
+        other: "%{count} 分钟"
+      about_x_hours:
+        one: "大约一小时"
+        other: "大约 %{count} 小时"
+      x_days:
+        one: "一天"
+        other: "%{count} 天"
+      about_x_months:
+        one: "大约一个月"
+        other: "大约 %{count} 个月"
+      x_months:
+        one: "一个月"
+        other: "%{count} 个月"
+      about_x_years:
+        one: "大约一年"
+        other: "大约 %{count} 年"
+      over_x_years:
+        one: "一年多"
+        other: "%{count} 年多"
+      almost_x_years:
+        one:   "接近一年"
+        other: "接近 %{count} 年"
+    prompts:
+      year:   "年"
+      month:  "月"
+      day:    "日"
+      hour:   "时"
+      minute: "分"
+      second: "秒"
+
+  number:
+    format:
+      separator: "."
+      delimiter: ","
+      precision: 3
+      significant: false
+      strip_insignificant_zeros: false
+    currency:
+      format:
+        format: "%u %n"
+        unit: "CN¥"
+        separator: "."
+        delimiter: ","
+        precision: 2
+        significant: false
+        strip_insignificant_zeros: false
+    percentage:
+      format:
+        delimiter: ""
+    precision:
+      format:
+        delimiter: ""
+    human:
+      format:
+        delimiter: ""
+        precision: 1
+        significant: false
+        strip_insignificant_zeros: false
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: "Byte"
+            other: "Bytes"
+          kb: "KB"
+          mb: "MB"
+          gb: "GB"
+          tb: "TB"
+      decimal_units:
+        format: "%n %u"
+        units:
+          # 10^-21 zepto, 10^-24 yocto
+          atto: "渺"  # 10^-18
+          femto: "飞" # 10^-15 毫微微
+          pico: "漠"  # 10^-12 微微
+          nano: "奈"  # 10^-9 毫微
+          micro: "微" # 10^-6
+          mili: "毫"  # 10^-3 milli
+          centi: "厘" # 10^-2
+          deci: "分"  # 10^-1
+          unit: ""
+          ten:
+            one: "十"
+            other: "十"  # 10^1
+          hundred: "百"  # 10^2
+          thousand: "千" # 10^3 kilo
+          million: "百万" # 10^6 mega
+          billion: "十亿" # 10^9 giga
+          trillion: "兆" # 10^12 tera
+          quadrillion: "千兆" # 10^15 peta
+          # 10^18 exa, 10^21 zetta, 10^24 yotta
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " 和 "
+      last_word_connector: ", 和 "
+    select:
+      prompt: "请选择"
+
+# Mouse
+# add more activerecord model params(需要本地化的model可以在下面补充，形式按照employee)
+  activerecord:
+    models:
+      accessory_requirement: "辅料需求"
+      yarn_requirement: "纱线需求"
+      sample_order: "板单"
+      sample_order_item: "板单项"
+      store_receipt_item: "出入库单项"
+      order: "订单"
+      order_item: "订单项"
+      cloth_data: "款式"
+    attributes:
+      supplier:
+        number: "供应商代号"
+      employee:
+        login: "登录名"
+        email: "邮箱"
+        password: "密码"
+      accessory_requirement:
+        parent_order_item_id: "订(板)单项号"
+        accessory_id: "辅料库存"
+        accessory_data_id: "辅料类型"
+        self_support: "供应类型"
+        quantity: "数量"
+      cutting_record:
+        fabric_quantity: "来布"
+        order_item: "所选订单"
+        quantity: "数量"
+      cloth_data:
+        number: "款号"
+        color: "色号"
+      customer:
+        number : "客户代号"
+      workshop_task:
+        group: "小组"
+        cutting_record: "裁床记录"
+        assigned_quantity: "分配裁数"
+      workshop_report:
+        finished_quantity: "完成数"
+        workshop_task: "加工任务"
+      manufacture_task:
+        order_item: "订单项"
+        part_type: "部位"
+        quantity: "数量"
+      yinhua_report:
+        order_item: "订单"
+      xiuhua_report:
+        order_item: "订单"
+      arranging_report:
+        order_item: "订单"
+        quantity: "数量"
+      parent_order_item:
+        size_1: "下单数"
+        size_2: "下单数"
+        size_3: "下单数"
+        size_4: "下单数"
+        size_5: "下单数"
+        size_6: "下单数"
+        size_7: "下单数"
+        size_8: "下单数"
+        size_9: "下单数"
+        size_10: "下单数"
+      sample_order:
+        number: "板单号"
+        sample_order_items:
+          number: "板单项号"
+          cloth_data_id: "款号"
+          size_1: "下单数"
+          size_2: "下单数"
+          size_3: "下单数"
+          size_4: "下单数"
+          size_5: "下单数"
+          size_6: "下单数"
+          size_7: "下单数"
+          size_8: "下单数"
+          size_9: "下单数"
+          size_10: "下单数"
+      sample_order_item:
+        number: "板单项号"
+        cloth_data_id: "款号"
+        size_1: "下单数"
+        size_2: "下单数"
+        size_3: "下单数"
+        size_4: "下单数"
+        size_5: "下单数"
+        size_6: "下单数"
+        size_7: "下单数"
+        size_8: "下单数"
+        size_9: "下单数"
+        size_10: "下单数"
+      order:
+        number: "订单号"
+        order_items:
+          number: "订单项号"
+          cloth_data_id: "款号"
+          size_1: "下单数"
+          size_2: "下单数"
+          size_3: "下单数"
+          size_4: "下单数"
+          size_5: "下单数"
+          size_6: "下单数"
+          size_7: "下单数"
+          size_8: "下单数"
+          size_9: "下单数"
+          size_10: "下单数"
+      order_item:
+        number: "订单项号"
+        cloth_data_id: "款号"
+        size_1: "下单数"
+        size_2: "下单数"
+        size_3: "下单数"
+        size_4: "下单数"
+        size_5: "下单数"
+        size_6: "下单数"
+        size_7: "下单数"
+        size_8: "下单数"
+        size_9: "下单数"
+        size_10: "下单数"
+      store_receipt_item:
+        quantity: "数量"
+      databaseparent:
+        name: "数据库名"
+      role_group:
+        name: "小组名"
+    errors:
+      template: # ~ 2.3.5 backward compatible
+        header:
+          one: "有 1 个错误发生导致「%{model}」无法被保存。"
+          other: "有 %{count} 个错误发生导致「%{model}」无法被保存。"
+        body: "如下字段出现错误："
+      full_messages:
+        format: "%{attribute} %{message}"
+      messages:
+        inclusion: "不包含于列表中"
+        exclusion: "是保留关键字"
+        invalid: "是无效的"
+        confirmation: "与确认值不匹配"
+        accepted: "必须是可被接受的"
+        empty: "不能留空"
+        blank: "不能为空"
+        too_long: "过长（最长为 %{count} 个字符）"
+        too_short: "过短（最短为 %{count} 个字符）"
+        wrong_length: "长度非法（必须为 %{count} 个字符）"
+        not_a_number: "不是数字"
+        not_an_integer: "必须是整数"
+        greater_than: "必须大于 %{count}"
+        greater_than_or_equal_to: "必须大于或等于 %{count}"
+        equal_to: "必须等于 %{count}"
+        less_than: "必须小于 %{count}"
+        less_than_or_equal_to: "必须小于或等于 %{count}"
+        odd: "必须为单数"
+        even: "必须为双数"
+        taken: "已经被使用,请使用其他"
+        record_invalid: "校验失败: %{errors}"
+        record_unremovable: "删除失败：该记录不可删除"
+        record_unupdatable: "更新失败：该记录不可更新"
+        
+  wando_error_msgs:
+    size_table_applied: "尺码表已应用于系统中"
+    size_table_uneditable: "该记录已应用于系统中，不可编辑"
+    unknown_cf_calculation_type: "未知的工艺计算类型，无法计算"
+
+  activemodel:
+    errors:
+      template:
+        header:
+          one: "有 1 个错误发生导致「%{model}」无法被保存。"
+          other: "有 %{count} 个错误发生导致「%{model}」无法被保存。"
+        body: "如下字段出现错误："
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      inclusion: "不包含于列表中"
+      exclusion: "是保留关键字"
+      invalid: "是无效的"
+      confirmation: "与确认值不匹配"
+      accepted: "必须是可被接受的"
+      empty: "不能留空"
+      blank: "不能为空字符"
+      too_long: "过长（最长为 %{count} 个字符）"
+      too_short: "过短（最短为 %{count} 个字符）"
+      wrong_length: "长度非法（必须为 %{count} 个字符）"
+      not_a_number: "不是数字"
+      not_an_integer: "必须是整数"
+      greater_than: "必须大于 %{count}"
+      greater_than_or_equal_to: "必须大于或等于 %{count}"
+      equal_to: "必须等于 %{count}"
+      less_than: "必须小于 %{count}"
+      less_than_or_equal_to: "必须小于或等于 %{count}"
+      odd: "必须为单数"
+      even: "必须为双数"
+
+  helpers:
+    select:
+      prompt: "请选择"
+    submit:
+      create: "新增%{model}"
+      update: "更新%{model}"
+      submit: "储存%{model}"
+
+# devise error messages
+  errors:
+    messages:
+      not_found: "没有找到"
+      already_confirmed: "已经确认"
+      not_locked: "没有锁定"
+  devise:
+    failure:
+      unauthenticated: "继续操作前请登录."
+      unconfirmed: "请先激活您的帐号"
+      locked: "您的帐号已被锁定."
+      invalid: "帐号/邮箱或密码错误"
+      invalid_token: "认证码无效."
+      timeout: "您已登录超时，请重新登录."
+      inactive: "您还没有激活帐户."
+    sessions:
+      signed_in: "登录成功."
+      signed_out: "退出成功."
+    passwords:
+      send_instructions: "几分后，您将收到重置密码的电子邮件."
+      updated: "您的密码已修改成功，请重新登录."
+    confirmations:
+      send_instructions: "几分后，您将收到帐号激活的电子邮件."
+      confirmed: "您的帐号已经激活，请登录."
+    registrations:
+      signed_up: "您的帐号已注册成功，如无意外，您将地收到一封确认邮件."
+      updated: "帐号资料更新成功."
+      destroyed: "再见！您的帐户已成功注销。我们希望很快可以再见到您."
+    unlocks:
+      send_instructions: "几分后，您将收到一封帐号解锁的邮件."
+      unlocked: "您的帐号已成功解锁，请登录."
+    mailer:
+      confirmation_instructions:
+        subject: "确认信息"
+      reset_password_instructions:
+        subject: "重置密码信息"
+      unlock_instructions:
+        subject: "解锁信息"
