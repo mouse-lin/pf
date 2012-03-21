@@ -1,9 +1,21 @@
 Pf::Application.routes.draw do
+  resources :homes do
+    collection do
+      get "index"
+    end
+  end
+  resources :settings do
+    collection do
+      get "index"
+    end
+  end
+  
+  
+
   #可切换不同用户列表
   devise_for :users do
     get "logout", :to =>  "devise/sessions#destroy"
   end
-  get "homes/index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
