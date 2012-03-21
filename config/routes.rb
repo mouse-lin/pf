@@ -1,6 +1,8 @@
 Pf::Application.routes.draw do
   #可切换不同用户列表
-  devise_for :users
+  devise_for :users do
+    get "logout", :to =>  "devise/sessions#destroy"
+  end
   get "homes/index"
 
   # The priority is based upon order of creation:

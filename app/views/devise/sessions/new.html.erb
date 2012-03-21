@@ -1,17 +1,22 @@
-<h2>登录</h2>
-
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <p><%= f.label :email %><br />
-  <%= f.email_field :email %></p>
-
-  <p><%= f.label :password %><br />
-  <%= f.password_field :password %></p>
-
-  <% if devise_mapping.rememberable? -%>
-    <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
-  <% end -%>
-
-  <p><%= f.submit "Sign in" %></p>
-<% end %>
-
-<%= render :partial => "devise/shared/links" %>
+<%= stylesheet_link_tag "login-box.css" %>
+<div style="padding: 80px 0 0 400px;">
+ <div id="login-box">
+  <H3>学生自动评分系统</H3>
+  <br />
+  <br />
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+    <div style="margin-left:100px;"><font color="red"><p class="alert"><%= alert %></p></font></div>
+  <div id="login-box-name" style="margin-top:20px;">账户:</div><div id="login-box-field" style="margin-top:20px;">
+    <input name="user[email]" class="form-login" title="Username" value="" size="30" maxlength="2048" />
+  </div>
+  <div id="login-box-name">密码:</div><div id="login-box-field">
+    <input name="user[password]" type="password" class="form-login" title="Password" value="" size="30" maxlength="2048" />
+  </div>
+  <br/>
+  <span class="login-box-options"><%= f.check_box :remember_me %>记住我</span>
+  <br/>
+  <br/>
+    <div style="margin-left:130px;"><p><%= f.submit "登录" %></p></div>
+  <% end %>
+  </div>
+  </div>
