@@ -1,5 +1,7 @@
-namespace :purchasing do
-  desc "generate single relation order data"
+# -*- encoding : utf-8 -*-
+
+namespace :data do
+  desc "generate single data"
   task :env => :environment do
     ActiveRecord::Base.transaction do
       begin
