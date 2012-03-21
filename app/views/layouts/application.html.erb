@@ -5,10 +5,12 @@
   <%= javascript_include_tag 'Extjs/ext-base-debug.js' %>
   <%= javascript_include_tag 'Extjs/ext-all-debug.js' %>
   <%= javascript_include_tag 'Extjs/ext-lang-zh_CN.js' %>
+
   <%= javascript_include_tag 'PF/public/init.js' %>
   <%= javascript_include_tag 'PF/util/util.js' %>
   <%= javascript_include_tag 'Jquery/jquery.js' %>
   <%= javascript_include_tag 'Jquery/interface.js' %>
+
   <%= stylesheet_link_tag '/javascripts/Extjs/resources/css/ext-all.css' %>
   <%= stylesheet_link_tag '/javascripts/Extjs/resources/css/xtheme-gray.css' %>
   <%= stylesheet_link_tag 'menu-style.css' %>
@@ -51,6 +53,7 @@
 </div>
 
 <%= yield %>
+</body>
   <script language="javascript" type="text/javascript">
      Ext.onReady(function(){
           if(Pf.pages.currentInstance){
@@ -63,10 +66,10 @@
               Pf.viewPage = new Ext.Viewport({
                   layout : 'border',
                   autoScroll : true,
-                  items : [ menuPanel, { region: 'center', items: Pf.pages.currentInstance }]
+                  items : [ menuPanel, { region: 'center',layout : 'border', items: Pf.pages.currentInstance }]
               });
           }
       })
   </script>
-</body>
+
 </html>

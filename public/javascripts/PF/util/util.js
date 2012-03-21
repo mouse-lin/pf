@@ -1,3 +1,8 @@
+Pf.util.scope = function(fn, obj, args){
+    //  为fn创建 delegate（委托），这种写对于匿名回调函数比较明显。
+    return fn.createDelegate(obj, args);
+};
+
 Pf.util.FieldsJsonStore = Ext.extend(Ext.data.JsonStore, {
     constructor: function(config){
         Ext.applyIf(config,{
