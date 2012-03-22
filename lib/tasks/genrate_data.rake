@@ -11,6 +11,7 @@ namespace :data do
         ]
         Classes.destroy_all
         cls = Classes.create(clss)
+        puts "===Classes==="
 
         ps = [
           {
@@ -20,19 +21,38 @@ namespace :data do
             :number => "10086110120",
             :sex => "男", 
             :type => "student", 
-            :class => Classes.first, 
+            :classes => Classes.all.first, 
           },
           { 
-            :name => "大明",
+            :name => "啊信",
             :phone => "10010", 
             :home => "中国电不信", 
             :number => "10010315123", 
-            :sex => "女", 
+            :sex => "女",
             :type => "student", 
-            :class => Classes.last, 
+            :classes => Classes.all.first, 
           },
+          {
+            :name => "大明",
+            :phone => "10086", 
+            :home => "广东移不动", 
+            :number => "10086110911",
+            :sex => "男", 
+            :type => "student", 
+            :classes => Classes.all.last, 
+          },
+          { 
+            :name => "啊电",
+            :phone => "10010", 
+            :home => "中国电不信", 
+            :number => "10010315892", 
+            :sex => "女",
+            :type => "student", 
+            :classes => Classes.all.last, 
+          }
         ]
         sts = Person.create(ps)
+        puts "====Person===="
         
         cses = [
           { :name => "语文" },
@@ -40,13 +60,14 @@ namespace :data do
           { :name => "英语" }
         ]
         cs = Course.create(cses)
+        puts "====Course==="
 
+        CourseScore.destroy_all
         Person.all.each do |person|
           Course.all.each do |course|
+            CourseScore.create(:course => course, :person => person, :score => rand(100) )
           end
         end
-        CourseScore.destroy_all
-        css = CourseScore.create()
 
         ScoreType.destroy_all
         ScoreType.create([
