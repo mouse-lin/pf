@@ -20,6 +20,9 @@ Pf::Application.routes.draw do
     collection do
       get "get_all_students"
     end
+    member do
+      post "update_student_comment"
+    end
   end
   
   

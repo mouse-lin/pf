@@ -11,6 +11,8 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
     layout     : 'border',
    
     initComponent : function  () {
+        currentClasses = undefined;
+        currentStu = undefined;
         this.addDefaultComponents();
         Pf.classes.commentStudent.MainPanel.superclass.initComponent.call(this);
     },
@@ -25,17 +27,19 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
             items : [
                 this.tree,
                 this.commentGrid,
-                new Ext.FormPanel({ 
+                new Ext.FormPanel({
                     region: 'south',
                     frame : true,
                     height : 180,
                     labelAlign : 'top',
                     items: [ { xtype : 'textarea',fieldLabel: "评语", id : 's-comment', width : "100%", height : 145  } ],
-                }),
+                })
             ]},
             this.studentForm
         ]
-            
+
+        this.studentGrid = this.createStudentGrid();
+        this.studentWin = this.createStudentWin();
     },
 
     createTree : function  () {
@@ -56,7 +60,8 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                     if(node.isLeaf){
                         var store = Ext.getCmp('comment-grid').getStore();
                         store.removeAll();
-                        store.load({ params : { ct_id : node.attributes.id } });
+                        store.setBaseParam('ct_id', node.attributes.id);
+                        store.load();
                     }
                 }
             }
@@ -77,17 +82,19 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
           ],
           defaults: { menuDisabled : true, sortable : true }
         });
+
         var grid = new Ext.grid.EditorGridPanel({
             id : 'comment-grid',
             region : 'center',
             store: store,
+            cm   : cm,
             border: false,
             title : '评价详细',
             stripeRows: true,
             loadMask : true,
             viewConfig: { forceFit: true },
             bbar : new Pf.util.Bbar({ store : store }),
-            cm   : cm,
+            tbar: ['  ','查询: ', ' ', new Ext.ux.form.SearchField({ store: store, width: 320 })],
             sm : new Ext.grid.RowSelectionModel({ }),
             listeners: { 
                 celldblclick : function(grid,rowIndex,columnIndex) {
@@ -99,10 +106,131 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
         return grid;
     },
 
+    createStudentWin : function  () {
+        var studentWin = new Ext.Window({
+            title : '请选择学生',
+            closeAction: 'hide',
+            width: 700,
+            height: 400,
+            modal: true,
+            constrainHeader: true,
+            layout: 'fit',
+            items: this.studentGrid,
+            buttons: [
+                { text: '关闭', handler:function(){ studentWin.hide(); } },
+            ]
+        });
+        return studentWin;
+    },
+
     createForm : function  () {
         var scope = this;
+
+        var studentField = new Ext.ux.form.SearchField({ 
+            id          : 'fbillerid',
+            name        : 'name',
+            fieldLabel  : '学生',
+            emptyText   : '请选择学生',
+            editable    : false,
+            onTrigger2Click : function() {
+                if (currentClasses != undefined) { scope.studentGrid.getStore().reload(); };
+                scope.studentWin.show();
+            }
+        });
+        
+        var form = new Ext.FormPanel({ 
+          region : 'east',
+          title : '学生信息',
+          frame : true,
+          autoScroll : true,
+          width : 280,
+          labelWidth: 40,
+          labelAlign: 'left',
+          bodyStyle: 'padding:5px 15px 0',
+          defaults : { anchor : '95%', width : 200 },
+          defaultType : 'textfield',
+          items: [
+              new Ext.form.FieldSet({
+                  title : '头像',
+                  layout : 'fit',
+                  height : 140,
+                  items :[{
+                      html : '<span id="image"><img src="/images/Temp.png" height=110px width=120px alt="图片" /></span>'
+                  }]
+              }),
+              studentField 
+              ,{
+                fieldLabel: '学号',
+                name: 'number',
+                readOnly: true
+              },{
+                fieldLabel: '班级',
+                name: 'classes/name',
+                readOnly: true
+              }, {
+                fieldLabel: '性别',
+                name: 'sex',
+                readOnly: true
+              },{
+                fieldLabel: '总分',
+                name: 'total_score',
+                readOnly: true
+              }, {
+                fieldLabel: '评级',
+                name: 'grade',
+                readOnly: true
+              }, {
+                fieldLabel: '备注',
+                name: 'remark',
+                readOnly: true
+              }
+          ],
+          buttonAlign: 'center',
+          buttons: [
+              { text : '保存', handler : function() { scope.saveComment() } },
+              { text : '清除', handler : function() { scope.addComment("",true) } },
+              { text : '重置', handler : function() { scope.addComment(currentStu.get('comment'), true)} }
+          ]
+        });
+        return form;
+    },
+
+
+    createStudentGrid : function() {
+        var scope = this;
+        var store = new Pf.util.FieldsJsonStore({
+            root : 'root',
+            url  : '/homes/get_classes_students.json',
+            fields : [
+                "id",
+                'name',
+                'number',
+                'phone',
+                'home',
+                'remark' ,
+                'sex',
+                'classes/name',
+                'comment',
+                'image/url',
+                'grade',
+                'total_score'
+              ]
+        });
+
+        var cm = new Ext.grid.ColumnModel({
+            columns: [
+                { header: '学号' , dataIndex: 'number' },
+                { header: '姓名' , dataIndex: 'name' },
+                { header: '电话' , dataIndex: 'phone' },
+                { header: '住址' , dataIndex: 'home' },
+                { header: '性别' , dataIndex: 'sex' },
+                { header: '总分' , dataIndex: 'total_score' },
+                { header: '备注' , dataIndex: 'remark' },
+            ],
+            defaults: { menuDisabled : true, sortable : true }
+        });
+
         var classCombox = new Ext.form.ComboBox({
-            fieldLabel    : '班级',
             triggerAction : 'all',
             displayField  : 'name',
             mode          : 'remote',
@@ -116,60 +244,50 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
             }),
             listeners : {
                 select : function(combo, record, index) {
+                    var store = Ext.getCmp("student-grid").getStore();
+                    store.removeAll();
+                    store.setBaseParam("c_id",record.get("id"));
+                    currentClasses = record;
+                    store.load();
                 }
             }
         });
-        
-        var form = new Ext.FormPanel({ 
-          region : 'east',
-          title : '学生信息',
-          frame : true,
-          autoScroll : true,
-          width : 280,
-          lableWidth: 55,
-          labelAlign : 'top',
-          bodyStyle: 'padding:5px 15px 0',
-          defaults : { anchor : '95%' },
-          defaultType : 'textfield',
-          layout: 'form',
-          items: [
-              new Ext.form.FieldSet({
-                  title : '头像',
-                  layout : 'fit',
-                  height : 140,
-                  items :[{
-                      html : '<span id="image"><img src="/images/Temp.png" height=110px width=120px alt="图片" /></span>'
-                  }]
-              }),
-                classCombox
-              ,{
-                fieldLabel: '学号',
-                name: 'number',
-              },{
-                fieldLabel: '姓名',
-                name: 'name',
-              },{
-                fieldLabel: '性别',
-                name: 'sex',
-              },{
-                fieldLabel: '班级',
-                name: 'classes/name',
-              }, {
-                fieldLabel: '总分',
-                name: 'total_score',
-              }, {
-                fieldLabel: '评级',
-                name: 'grade',
-              }
-          ],
-          buttonAlign: 'center',
-          buttons: [
-              { text : '保存', handler : function() { scope.saveComment() } },
-              { text : '清除', handler : function() { scope.addComment("",true) } },
-              { text : '重置', handler : function() { scope.addComment(currentStu.get('comment'), true)} }
-          ]
+
+        var grid = new Ext.grid.EditorGridPanel({
+            id : 'student-grid',
+            store: store,
+            cm   : cm,
+            border: false,
+            containerScroll: true,
+            loadMask : true,
+            width: 200,
+            region: 'west',
+            split: true,
+            title : "学生列表",
+            stripeRows: true,
+            viewConfig: { forceFit: true },
+            tbar: new Ext.Toolbar({
+                items : [
+                    '班级:',classCombox,'->',
+                    '学号查询: ', ' ', new Ext.ux.form.SearchField({ store: store, width: 220 })
+                    ]
+            }),
+            sm : new Ext.grid.RowSelectionModel({ }),
+            listeners: { 
+                celldblclick : function(grid,rowIndex,columnIndex) {
+                    var record = grid.getStore().getAt(rowIndex);
+                    var form = scope.studentForm.getForm()
+                    form.reset();
+                    form.loadRecord(record);
+                    //加载头像
+                    //$("#image img").attr("src", record.get('image/url'));
+                    currentStu = record;
+                    scope.addComment(currentStu.get('comment'), true);
+                    scope.studentWin.hide();
+                }
+            }
         });
-        return form;
+        return grid;
     },
 
     addComment : function  (content, clear) {
@@ -181,8 +299,28 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
         };
     },
 
-    saveComment : function () {
-        
+    saveComment : function() {
+        if (currentStu == undefined) {return;};
+        Ext.Msg.confirm("系统提示","确认保存学生'"+currentStu.get("name")+"'的评价信息？",function  (button,text) {
+            if (button == "yes") {
+                saveHandler.call(this);
+            };
+        },this);
+
+        function saveHandler () {
+            Ext.Ajax.request({
+                url: '/students/' + currentStu.get("id") + '/update_student_comment.json',
+                method : "POST",
+                jsonData: { comment : Ext.getCmp('s-comment').getValue() },
+                success: function  (response,onpts) {
+                    Ext.Msg.alert("提示","保存成功。");
+                },
+                failure: function  (response, onpts) {
+                    var msg = Ext.decode(response.responseText).root.error_msg;
+                    Ext.Msg.alert("", msg);
+                }
+            });
+        }
     }
 
 });

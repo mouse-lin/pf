@@ -9,4 +9,14 @@ class StudentsController < ApplicationController
     #end
     render_json students
   end
+
+
+  def update_student_comment
+    s = Student.find(params[:id])
+    if s.update_attribute(:comment, params[:comment])
+      render_json "success"
+    else
+      render_error s.errors
+    end
+  end
 end

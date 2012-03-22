@@ -3,7 +3,7 @@ class HomesController < ApplicationController
   end
 
   def get_classes_students
-    render_json Classes.find(params[:c_id]).students.order("#{params[:sort]} #{params[:dir]}").collect &fields_provider
+    render_json Classes.find(params[:c_id]).students.number_like(params[:query]).order("#{params[:sort]} #{params[:dir]}").collect &fields_provider
   end
 
   def get_classes
@@ -26,7 +26,7 @@ class HomesController < ApplicationController
   end
 
   def commets_by_type
-    render_json CommentType.find(params[:ct_id]).comments.collect &fields_provider
+    render_json CommentType.find(params[:ct_id]).comments.content_like(params[:query]).collect &fields_provider
   end
 
 end

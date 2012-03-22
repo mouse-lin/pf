@@ -61,8 +61,9 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             displayField  : 'name',
             mode          : 'remote',
             autoSelect    : true,
-            width : 130,
+            width : 180,
             forceSelection : true,
+            emptyText : '请选择班级',
             store : new Pf.util.FieldsJsonStore({
                 url : '/homes/get_classes.json',
                 fields  : ["id", "name"],
@@ -72,7 +73,8 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                 select : function(combo, record, index) {
                     var store = Ext.getCmp("student-grid").getStore();
                     store.removeAll();
-                    store.load({ params : { c_id : record.get("id") } });
+                    store.setBaseParam("c_id", record.get("id"));
+                    store.load();
                 }
             }
         });
@@ -91,7 +93,9 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             stripeRows: true,
             viewConfig: { forceFit: true },
             tbar: new Ext.Toolbar({
-                items : ['班级:',classCombox ]
+                layout : 'form',
+                labelWidth : 1,
+                items : ['班级:',classCombox, '学号查询：',new Ext.ux.form.SearchField({ emptyText : '请输入学号' ,store: store, width: 180 }) ]
             }),
             sm : new Ext.grid.RowSelectionModel({
                 listeners : {
@@ -145,7 +149,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             region : 'center',
             frame : true,
             autoScroll : true,
-            lableWidth: 55,
+            labelWidth: 60,
             labelAlign : 'right',
             bodyStyle: 'padding:5px 5px 0',
             items: [{
