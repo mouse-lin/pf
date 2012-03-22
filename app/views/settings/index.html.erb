@@ -1,2 +1,6 @@
-<h1>Settings#index</h1>
-<p>Find me in app/views/settings/index.html.erb</p>
+<%= javascript_include_tag '/javascripts/PF/pages/settings_index.js' %>
+<script language="javascript" type="text/javascript">
+    Ext.onReady(function() { 
+        Pf.pages.currentInstance = Pf.settings.homeIndex.panel();
+    });
+</script>
