@@ -1,0 +1,16 @@
+in_memory:
+  adapter: sqlite3
+  database: ":memory:"
+  verbosity: quiet
+  
+  
+# development:
+#   adapter: sqlite3
+#   database: db/development.sqlite3
+#   pool: 5
+#   timeout: 5000
+# test:
+#   adapter: sqlite3
+#   database: db/development.sqlite3
+#   pool: 5
+#   timeout: 5000  

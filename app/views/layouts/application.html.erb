@@ -60,13 +60,18 @@
               var menuPanel = new Ext.Panel({
                   height : 50,
                   region : 'south',
-                  border : false
+                  border : false,
+                  bodyStyle : "background : none"
               });
 
               Pf.viewPage = new Ext.Viewport({
                   layout : 'border',
                   autoScroll : true,
-                  items : [ menuPanel, { region: 'center',layout : 'border', items: Pf.pages.currentInstance }]
+                  items : [ 
+                      //{ height : 30, region: 'north',border:false },
+                      { region: 'center',layout : 'border', border: false,items: Pf.pages.currentInstance },
+                      menuPanel 
+                  ]
               });
           }
       })

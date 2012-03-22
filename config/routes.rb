@@ -2,6 +2,10 @@ Pf::Application.routes.draw do
   resources :homes do
     collection do
       get "index"
+      get "get_classes"
+      get 'get_classes_students'
+      get 'student_detail'
+      get 'student_score'
     end
   end
   resources :settings do

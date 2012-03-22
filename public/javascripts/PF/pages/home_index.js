@@ -2,7 +2,6 @@ Ext.ns("Pf.classes.homeIndex");
 
 Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
     autoScroll : true,
-    title      : '学生信息',
     layout     : 'border',
     region     : 'center',
     
@@ -33,7 +32,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
     createGrid : function() {
         var store = new Pf.util.FieldsJsonStore({
             root : 'root',
-            url  : '#',
+            url  : '/homes/get_classes_students.json',
             fields : ["id",'name','number']
         });
 
@@ -52,23 +51,27 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             autoSelect    : true,
             width : 130,
             forceSelection : true,
-            lastQuery     : '',
             store : new Pf.util.FieldsJsonStore({
-                url : '#',
+                url : '/homes/get_classes.json',
                 fields  : ["id", "name"],
                 autoLoad: false
             }),
             listeners : {
                 select : function(combo, record, index) {
+                    var store = Ext.getCmp("student-grid").getStore();
+                    store.removeAll();
+                    store.load({ params : { c_id : record.get("id") } });
                 }
             }
         });
 
         var grid = new Ext.grid.EditorGridPanel({
+            id : 'student-grid',
             store: store,
             cm   : cm,
             border: false,
             containerScroll: true,
+            loadMask : true,
             width: 200,
             region: 'west',
             split: true,
@@ -117,7 +120,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             region : 'center',
             frame : true,
             autoScroll : true,
-            lableWidth: 60,
+            lableWidth: 55,
             labelAlign : 'right',
             bodyStyle: 'padding:5px 5px 0',
             items: [{
