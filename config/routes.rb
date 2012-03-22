@@ -6,6 +6,9 @@ Pf::Application.routes.draw do
       get 'get_classes_students'
       get 'student_detail'
       get 'student_score'
+      get 'comment_student'
+      post 'comment_type_tree_nodes'
+      get 'commets_by_type'
     end
   end
   resources :settings do
@@ -18,7 +21,6 @@ Pf::Application.routes.draw do
       get "get_all_students"
     end
   end
-  
   
   
 

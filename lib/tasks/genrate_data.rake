@@ -88,8 +88,8 @@ namespace :data do
         Comment.destroy_all
         cms = Comment.create(cmses)
         cmtses = [
-          { :type => "思想德语" },
-          { :type => "学风" },
+          { :name => "思想德语" },
+          { :name => "学风" },
         ]
         CommentType.destroy_all
         cmts = CommentType.create(cmtses)

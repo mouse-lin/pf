@@ -21,7 +21,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             tbar : new Ext.Toolbar({
                 id : 'form-tbar',
                 items : [
-                    { id : 'update-btn', text: '打印',   handler: Pf.util.scope(this.printHandler,this) },
+                    { id : 'update-btn', text: '打印',   handler: Pf.util.scope(this.printHandler,this), icon : Pf.Icon.Print },
                 ]
             }),
             items : [ this.form ]
