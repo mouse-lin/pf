@@ -20,7 +20,7 @@ namespace :data do
             :home => "广东移不动", 
             :number => "10086110120",
             :sex => "男", 
-            :type => "student", 
+            :type => "Student", 
             :classes => Classes.all.first, 
           },
           { 
@@ -29,7 +29,7 @@ namespace :data do
             :home => "中国电不信", 
             :number => "10010315123", 
             :sex => "女",
-            :type => "student", 
+            :type => "Student", 
             :classes => Classes.all.first, 
           },
           {
@@ -38,7 +38,7 @@ namespace :data do
             :home => "广东移不动", 
             :number => "10086110911",
             :sex => "男", 
-            :type => "student", 
+            :type => "Student", 
             :classes => Classes.all.last, 
           },
           { 
@@ -47,7 +47,7 @@ namespace :data do
             :home => "中国电不信", 
             :number => "10010315892", 
             :sex => "女",
-            :type => "student", 
+            :type => "Student", 
             :classes => Classes.all.last, 
           }
         ]
