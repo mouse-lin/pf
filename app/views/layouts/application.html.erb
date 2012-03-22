@@ -63,13 +63,13 @@
                   border : false,
                   bodyStyle : "background : none"
               });
-
+              Pf.pages.currentInstance.region = "center";
               Pf.viewPage = new Ext.Viewport({
                   layout : 'border',
                   autoScroll : true,
                   items : [ 
                       //{ height : 30, region: 'north',border:false },
-                      { region: 'center',layout : 'border', border: false,items: Pf.pages.currentInstance },
+                      Pf.pages.currentInstance,
                       menuPanel 
                   ]
               });
