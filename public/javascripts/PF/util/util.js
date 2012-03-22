@@ -36,3 +36,39 @@ Pf.util.Bbar = Ext.extend(Ext.PagingToolbar,{
     }
 });
 
+Pf.util.loadMask = {
+    show: function(msg) {
+        if(!Ext.isString(msg)) msg = "处理中...";
+        (new Ext.LoadMask(Ext.getBody(), { msg: msg })).show();
+        // From Van on 2011-10-06 => 用于修改 loadMask 显示 bug
+        Ext.get(Ext.DomQuery.jsSelect(".ext-el-mask:last")).applyStyles("z-index: 10000;");
+    },
+    
+    hide: function() {
+        (new Ext.LoadMask(Ext.getBody())).hide();
+    }
+};
+
+Pf.util.callback = {
+    success: function() {
+        Pf.util.loadMask.hide();
+        Ext.Msg.alert( '提示', '操作成功');
+    },
+    
+    failure: function(response, opts) {
+        Pf.util.loadMask.hide();
+        if(response.status == -1)
+            var error_message = '操作超时，网络异常，检查后请重试...';
+        else
+            var error_message = Ext.decode(response.responseText).root.error_msg;
+        Ext.Msg.alert(
+             '提示', 
+            error_message
+        );
+    },
+    
+    formFailure: function(form, action) {
+        Pf.util.loadMask.hide();
+        Ext.Msg.alert('提示', Ext.decode(action.response.responseText).root.error_msg);
+    }
+};

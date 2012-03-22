@@ -1,8 +1,14 @@
 Pf.settings.homeIndex = { 
     panel: function(){ 
         var grid = new Pf.classes.student();
-        var studentDetailFormPanel = this.createStuentDetail();
+        var studentScoreGrid = this.createStudentScoreGrid();
+        var studentDetailFormPanel = this.createStudentDetail();
         grid.store.load();
+        grid.on('cellclick', function(grid, rowIndex){ 
+            studentDetailFormPanel.getForm().setValues(grid.store.getAt(rowIndex).data);
+            $("#image img").attr("src", '/images/Temp.png');
+        });
+
         var panel = new Ext.TabPanel({ 
             autoScroll : true,
             activeTab: 0,
@@ -10,7 +16,9 @@ Pf.settings.homeIndex = {
             items: [
                 { title:  "学生主档", 
                     layout: "border",
-                    items: [{region: "center",width: 900, items: grid },{ region:"east",width: 500, layout: "anchor", items:studentDetailFormPanel }]   
+                    items: [
+                        {region: "center",layout: "border", width: 900, items: grid },
+                        {region:"east",width: 500, layout: "border", items:[ studentDetailFormPanel, studentScoreGrid]}]   
                 },
                 { title:  "学生主档", html: "mouse"  },
             ]
@@ -18,13 +26,60 @@ Pf.settings.homeIndex = {
         return panel;
     },
 
-    createStuentDetail: function(){ 
+    createStudentScoreGrid: function(){ 
+        var studentScoreStore = new Pf.util.FieldsJsonStore({ 
+            fields: [
+            ],
+            root : 'root',
+            url  : '/homes/get_classes_students.json',
+        });
+        var cm = new Ext.grid.ColumnModel([
+            { header: '初一第一学期', sortable: true, dataIndex: ''},
+            { header: '初一第二学期', sortable: true, dataIndex: ''},
+            { header: '初二第一学期', sortable: true, dataIndex: ''},
+            { header: '初二第二学期', sortable: true, dataIndex: ''},
+            { header: '初三第一学期', sortable: true, dataIndex: ''},
+            { header: '初三第二学期', sortable: true, dataIndex: ''},
+        ]);
+        var grid_name = new Ext.grid.EditorGridPanel({ 
+            viewConfig: { forceFit: true },
+            store: studentScoreStore,
+            loadMask: true,
+            cm: cm,
+            height: 300,
+            region: "south",
+            bbar : new Pf.util.Bbar({ store : studentScoreStore }),
+        });
+        return  grid_name;
+    },
+
+    createStudentDetail: function(){ 
+        var sexData = [['男','男'],['女','女']];
+        var sexCombo = new Ext.form.ComboBox({ 
+            //id: 'targetCombo',
+            valueField: 'sex',
+            fieldLabel: "性别",
+            triggerAction: 'all',
+            name: 'sex',
+            displayField: 'sexName',
+            width: 180,
+            mode: 'local',
+            editable :  false,
+            store: new Ext.data.SimpleStore({ 
+                fields: ['sex', 'sexName'],
+                data: sexData,
+                //autoLoad: true,
+            })
+        });
+
         var formPanel = new Ext.form.FormPanel({ 
            title: "test",
-           anchor: "100% 100%",
+           region: "center",
            autoScroll : true,
            frame: true,
            labelAlign : 'right',
+           buttonAlign: 'center',
+           buttons: [{ text: "更新", handler: function(){ alert("nihai") } }],
            items: [{ 
               layout: 'column',
               items:[
@@ -56,12 +111,11 @@ Pf.settings.homeIndex = {
                   },
                   { 
                       fieldLabel: "班级",
-                      name: "classes"
+                      name: "classes/name"
                   },
-                  { 
-                      fieldLabel: "性别",
-                      name: "sex"
-                  },
+                     sexCombo,
+                     // fieldLabel: "性别",
+                     // name: "sex"
                   { 
                       fieldLabel: "联系电话",
                       name: "phone"

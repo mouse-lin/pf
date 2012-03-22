@@ -2,7 +2,9 @@ Ext.ns("Pf.classes.student");
 
 Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{ 
     viewConfig: { forceFit: true },
-    height: 600,
+    region: "center",
+    loadMask: true,
+    id: "studentShowGrid",
     sm: new Ext.grid.RowSelectionModel({
         singleSelect: true
     }),
@@ -10,6 +12,7 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
         this.store = this.initStore();
         this.cm = this.initCm();
         this.tbar = this.initStudentTbar();
+        this.bbar = new Pf.util.Bbar({ store: this.store });
         Pf.classes.student.superclass.initComponent.call(this);
     },
     initStudentEditor: function(){ 
@@ -21,6 +24,7 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
     initStore: function(){ 
         var store  = new Pf.util.FieldsJsonStore({
             fields: [
+                "id",
                 "name",
                 "number",
                 "sex",
@@ -33,6 +37,7 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
         });
         return store;
     },
+
     initCm: function(){ 
         var cm = new Ext.grid.ColumnModel([
             new Ext.grid.RowNumberer(),
@@ -45,18 +50,64 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
         ]);
         return cm;
     },
+
     initStudentTbar: function(){ 
         var _this = this;
         var tbar = [
             { 
                 iconCls: "add",
                 text: "添加",
-                handler: function(){  alert("niha")}
+                handler: function(){  _this.addSingleStudent().show() }
             },
-            { iconCls: "delete", text: "删除" },
-            { iconCls: "table_edit", text: "编辑" },
-            { iconCls: "table_edit", text: "详细" },
+            { 
+                iconCls: "delete",
+                text: "删除",
+                handler: function(){ 
+                    var grid = Ext.getCmp("studentShowGrid");
+                    var record = grid.getSelectionModel().getSelected();
+                    if(!record){ Ext.Msg.alert("提示","请选择学生") }
+                    else{  
+                        Ext.Msg.confirm('提示', "是否确定保存?", function(button){ 
+                            if(button != "no"){
+                                Pf.util.loadMask.show();
+                                var studentId = record.id;
+                                Ext.Ajax.request({
+                                    url: "/students/destroy_student.json",
+                                    method: "POST",
+                                    jsonData: { id: record.id } ,
+                                    success: function(response, opts){
+                                        Pf.util.callback.success();
+                                        Ext.Msg.alert("提示","删除成功");
+                                        grid.store.reload();
+                                    },
+                                    failure: function(response, opts){
+                                        Pf.util.callback.failure();
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+             },
         ];
         return tbar;
-    }
+    },
+
+    addSingleStudent: function(){ 
+        var win = new Ext.Window({ 
+            title: "添加学生",
+            width: 650, 
+            height: 400,
+            id: "addSingleStudentWin",
+            modal: true,
+            constrain: true,
+            layout: 'anchor',
+            buttonAlign: 'center',
+            buttons: [
+                { text: "保存" },
+                { text: "取消", handler: function(){ Ext.getCmp("addSingleStudentWin").close() } }
+            ]
+        });
+        return win;
+    },
 })

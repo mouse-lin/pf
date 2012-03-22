@@ -2,11 +2,6 @@ class StudentsController < ApplicationController
   #获取学生信息
   def get_all_students
     students = Student.all.collect &fields_provider
-    #Student.all.each do  |s|
-    #  students.push(s.attributes.merge!({
-    #    :class_name => s.classes.try(:name)
-    #  }))
-    #end
     render_json students
   end
 
@@ -22,4 +17,10 @@ class StudentsController < ApplicationController
   def student_total_score
     render_json Student.find(params[:s_id]).total_score_by_grade
   end
+
+  def destroy_student
+    Student.find(params[:id]).delete
+    render_json "success"
+  end
+
 end
