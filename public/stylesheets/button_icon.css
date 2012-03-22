@@ -1,0 +1,78 @@
+/* extjs button image */
+.add { 
+  background-image:url(../../images/icon/add.png) !important;
+}
+
+.table_row_delete { 
+  background-image:url(../../images/icon/table_row_delete.png) !important;
+}
+
+.delete { 
+  background-image:url(../../images/icon/delete.png) !important;
+}
+
+.check{ 
+  background-image:url(../../images/icon/check.png) !important;
+}
+
+.table_edit{ 
+  background-image:url(../../images/icon/table_edit.png) !important;
+}
+
+.drop-yes{ 
+  background-image:url(../../images/icon/drop-yes.png) !important;
+}
+
+.error{ 
+  background-image:url(../../images/icon/error.png) !important;
+}
+
+.magnifier{ 
+  background-image:url(../../images/icon/magnifier.png) !important;
+}
+
+.pencil_delete{ 
+  background-image:url(../../images/icon/pencil_delete.png) !important;
+}
+
+.paintbrush{ 
+  background-image:url(../../images/icon/paintbrush.png) !important;
+}
+
+.table_refresh{ 
+  background-image:url(../../images/icon/table_refresh.png) !important;
+}
+
+.database{ 
+  background-image:url(../../images/icon/database.png) !important;
+}
+
+.print{ 
+  background-image:url(../../images/icon/printer.png) !important;
+}
+
+.calculator {
+    background-image: url(../../images/icon/calculator.png) !important;
+}
+
+.options {
+    background-image: url(../../images/icon/options.png) !important;
+}
+
+.import {
+    background-image: url(../../images/icon/import.png) !important;
+}
+
+.icon-prev
+{
+    background: url(../../images/icon/arrow_left.png) no-repeat center center !important;
+}
+
+.icon-next
+{
+    background: url(../../images/icon/arrow_right.png) no-repeat center center !important;
+}
+
+.user {
+    background-image: url(../../images/icon/user.png) !important;
+}

@@ -1,9 +1,16 @@
 Pf.settings.homeIndex = { 
     panel: function(){ 
-        var panel = new Ext.form.FormPanel({ 
+        var grid = new Pf.classes.student();
+        var grid2 = new Pf.classes.student();
+        var panel = new Ext.TabPanel({ 
             autoScroll : true,
-            title: "nihao",
+            activeTab: 0,
+            autpLoad: true,
             frame: true,
+            items: [
+                { title:  "学生主档", items: grid  },
+                { title:  "学生主档", items: grid2  },
+            ]
         });
         return panel;
     } 
