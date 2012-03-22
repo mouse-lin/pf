@@ -10,7 +10,6 @@ class StudentsController < ApplicationController
     render_json students
   end
 
-
   def update_student_comment
     s = Student.find(params[:id])
     if s.update_attribute(:comment, params[:comment])
@@ -18,5 +17,9 @@ class StudentsController < ApplicationController
     else
       render_error s.errors
     end
+  end
+
+  def student_total_score
+    render_json Student.find(params[:s_id]).total_score_by_grade
   end
 end

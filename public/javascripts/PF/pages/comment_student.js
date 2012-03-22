@@ -20,6 +20,7 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
     addDefaultComponents : function(){
         this.tree = this.createTree();
         this.commentGrid = this.createCommentGrid();
+        this.totalScoreGrid = this.createTotalScoreGrid();
         this.studentForm = this.createForm();
         this.items = [ {
             region : 'center',
@@ -34,8 +35,13 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                     labelAlign : 'top',
                     items: [ { xtype : 'textarea',fieldLabel: "评语", id : 's-comment', width : "100%", height : 145  } ],
                 })
-            ]},
-            this.studentForm
+            ]},{
+                width : 280,
+                region : 'east',
+                layout : 'border',
+                autoScroll : true,
+                items : [this.studentForm,this.totalScoreGrid]
+            }
         ]
 
         this.studentGrid = this.createStudentGrid();
@@ -139,11 +145,10 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
         });
         
         var form = new Ext.FormPanel({ 
-          region : 'east',
+          region: 'center',
           title : '学生信息',
           frame : true,
           autoScroll : true,
-          width : 280,
           labelWidth: 40,
           labelAlign: 'left',
           bodyStyle: 'padding:5px 15px 0',
@@ -172,10 +177,6 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                 name: 'sex',
                 readOnly: true
               },{
-                fieldLabel: '总分',
-                name: 'total_score',
-                readOnly: true
-              }, {
                 fieldLabel: '评级',
                 name: 'grade',
                 readOnly: true
@@ -183,7 +184,7 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                 fieldLabel: '备注',
                 name: 'remark',
                 readOnly: true
-              }
+              },
           ],
           buttonAlign: 'center',
           buttons: [
@@ -195,6 +196,34 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
         return form;
     },
 
+    createTotalScoreGrid : function  () {
+        var store = new Pf.util.FieldsJsonStore({
+          root : 'root',
+          url  : '/students/student_total_score.json',
+          fields : ['grade', 'total_score']
+        });
+        var cm = new Ext.grid.ColumnModel({
+          columns: [
+              { header: '学期' , dataIndex: 'grade' },
+              { header: '总分' , dataIndex: 'total_score' },
+          ],
+          defaults: { menuDisabled : true , sortable : false }
+        });
+        var grid = new Ext.grid.EditorGridPanel({
+            region: 'south',
+            height : 230,
+            collapsible: true,
+            loadMask : true,
+            //collapseMode: 'mini',
+            store: store,
+            cm   : cm,
+            border: false,
+            title : '各学期总成绩',
+            stripeRows: true,
+            viewConfig: { forceFit: true },
+        });
+        return grid;
+    },
 
     createStudentGrid : function() {
         var scope = this;
@@ -213,7 +242,6 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                 'comment',
                 'image/url',
                 'grade',
-                'total_score'
               ]
         });
 
@@ -224,7 +252,6 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                 { header: '电话' , dataIndex: 'phone' },
                 { header: '住址' , dataIndex: 'home' },
                 { header: '性别' , dataIndex: 'sex' },
-                { header: '总分' , dataIndex: 'total_score' },
                 { header: '备注' , dataIndex: 'remark' },
             ],
             defaults: { menuDisabled : true, sortable : true }
@@ -283,6 +310,10 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                     //$("#image img").attr("src", record.get('image/url'));
                     currentStu = record;
                     scope.addComment(currentStu.get('comment'), true);
+
+                    var st = scope.totalScoreGrid.getStore();
+                    st.removeAll();
+                    st.load({ params : { s_id : record.get("id") } });
                     scope.studentWin.hide();
                 }
             }

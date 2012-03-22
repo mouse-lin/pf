@@ -19,6 +19,7 @@ Pf::Application.routes.draw do
   resources :students do
     collection do
       get "get_all_students"
+      get "student_total_score"
     end
     member do
       post "update_student_comment"
