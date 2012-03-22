@@ -33,7 +33,19 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
         var store = new Pf.util.FieldsJsonStore({
             root : 'root',
             url  : '/homes/get_classes_students.json',
-            fields : ["id",'name','number','phone','home','remark','sex','classes/name']
+            fields : [
+                "id",
+                'name',
+                'number',
+                'phone',
+                'home',
+                'remark' ,
+                'sex',
+                'classes/name',
+                'comment',
+                'image/url',
+                'grade'
+                ]
         });
 
         var cm = new Ext.grid.ColumnModel({
@@ -89,7 +101,9 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                         var scoreGridStore = Ext.getCmp('score-grid').getStore();
                         scoreGridStore.load({ params : { s_id : s_id } });
                         //显示详细
-                        var form = scope.form.getForm();
+                        var form = scope.form.getForm()
+                        form.reset();
+                        form.loadRecord(record);
                         //加载头像
                         //$("#image img").attr("src", record.get('image/url'));
                     }
@@ -122,6 +136,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             loadMask :true,
             cm   : cm,
             height : 200,
+            sm : new Ext.grid.RowSelectionModel({}),
             title : "学生成绩",
             stripeRows: true,
             viewConfig: { forceFit: true },
@@ -162,7 +177,10 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                       name: 'sex',
                     }, {
                       fieldLabel: '班级',
-                      name: 'classes',
+                      name: 'classes/name',
+                    }, {
+                      fieldLabel: '评级',
+                      name: 'grade',
                     }]
                 },{
                     defaults : { anchor : '95%' ,readOnly : true},
@@ -187,7 +205,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                   layout : 'fit',
                   items : [{
                       xtype: 'textarea',
-                      id: 'bio',
+                      name : 'comment',
                       height: 150,
                       readOnly : true,
                       anchor: '98%'

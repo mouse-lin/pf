@@ -10,18 +10,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120322065109) do
+ActiveRecord::Schema.define(:version => 20120322072226) do
 
   create_table "classes", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remark"
   end
 
   create_table "comment_types", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remark"
   end
 
   create_table "comments", :force => true do |t|
@@ -29,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20120322065109) do
     t.integer  "comment_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remark"
   end
 
   create_table "course_scores", :force => true do |t|
@@ -38,12 +41,14 @@ ActiveRecord::Schema.define(:version => 20120322065109) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "grade"
+    t.string   "remark"
   end
 
   create_table "courses", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remark"
   end
 
   create_table "people", :force => true do |t|
@@ -61,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20120322065109) do
     t.datetime "image_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remark"
   end
 
   create_table "score_types", :force => true do |t|
@@ -69,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20120322065109) do
     t.integer  "end"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remark"
   end
 
   create_table "users", :force => true do |t|
