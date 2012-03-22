@@ -13,6 +13,12 @@ Pf::Application.routes.draw do
       get "index"
     end
   end
+  resources :students do
+    collection do
+      get "get_all_students"
+    end
+  end
+  
   
   
 

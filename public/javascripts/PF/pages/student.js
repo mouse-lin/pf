@@ -12,10 +12,15 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
     initStore: function(){ 
         var store  = new Ext.data.JsonStore({ 
             fields: [
-              
+                "name",
+                "number",
+                "sex",
+                "phone",
+                "home",
+                "class_name",
             ],
-            root: 'content',
-            url: 'store_url',
+            root: 'root',
+            url: '/students/get_all_students.json',
             totalProperty:'total',
             method:'GET',
         });
@@ -24,12 +29,12 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
     initCm: function(){ 
         var cm = new Ext.grid.ColumnModel([
             new Ext.grid.RowNumberer(),
-            { header: '学号', sortable: true, dataIndex: '',editor:new Ext.form.TextField()},
-            { header: '姓名', sortable: true, dataIndex: '',editor:new Ext.form.TextField()},
-            { header: '班级', sortable: true, dataIndex: '',editor:new Ext.form.TextField()},
-            { header: '性别', sortable: true, dataIndex: '',editor:new Ext.form.TextField()},
-            { header: '联系电话', sortable: true, dataIndex: '',editor:new Ext.form.TextField()},
-            { header: '住址', sortable: true, dataIndex: '',editor:new Ext.form.TextField()},
+            { header: '学号', sortable: true, dataIndex: 'number',editor:new Ext.form.TextField()},
+            { header: '姓名', sortable: true, dataIndex: 'name',editor:new Ext.form.TextField()},
+            { header: '班级', sortable: true, dataIndex: 'class_name',editor:new Ext.form.TextField()},
+            { header: '性别', sortable: true, dataIndex: 'sex',editor:new Ext.form.TextField()},
+            { header: '联系电话', sortable: true, dataIndex: 'phone',editor:new Ext.form.TextField()},
+            { header: '住址', sortable: true, dataIndex: 'home',editor:new Ext.form.TextField()},
         ]);
         return cm;
     },
