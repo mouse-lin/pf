@@ -15,7 +15,7 @@ class HomesController < ApplicationController
   end
 
   def student_score
-    render_json Student.find(params[:s_id]).provide params[:fields]
+    render_json Student.find(params[:s_id]).course_scores.collect &fields_provider
   end
 
 end

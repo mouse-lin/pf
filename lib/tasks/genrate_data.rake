@@ -51,7 +51,7 @@ namespace :data do
             :classes => Classes.all.last, 
           }
         ]
-        sts = Person.create(ps)
+        sts = Student.create(ps)
         puts "====Person===="
         
         cses = [
@@ -63,9 +63,9 @@ namespace :data do
         puts "====Course==="
 
         CourseScore.destroy_all
-        Person.all.each do |person|
+        Student.all.each do |student|
           Course.all.each do |course|
-            CourseScore.create(:course => course, :person => person, :score => rand(100) )
+            CourseScore.create(:course => course, :student => student, :score => rand(100),:grade => "第一学期" )
           end
         end
 

@@ -22,7 +22,6 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                 id : 'form-tbar',
                 items : [
                     { id : 'update-btn', text: '打印',   handler: Pf.util.scope(this.printHandler,this) },
-                    { id : 'save-btn', text: '更新评语', handler: Pf.util.scope(this.updateHandler,this) },
                 ]
             }),
             items : [ this.form ]
@@ -30,10 +29,11 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     createGrid : function() {
+        var scope = this;
         var store = new Pf.util.FieldsJsonStore({
             root : 'root',
             url  : '/homes/get_classes_students.json',
-            fields : ["id",'name','number']
+            fields : ["id",'name','number','phone','home','remark','sex','classes/name']
         });
 
         var cm = new Ext.grid.ColumnModel({
@@ -83,8 +83,15 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             }),
             sm : new Ext.grid.RowSelectionModel({
                 listeners : {
-                    rowselect : function (model, row, record) { 
-                        $("#image img").attr("src", record.get('image/url'));
+                    rowselect : function (model, row, record) {
+                        //加载成绩
+                        var s_id = record.get("id");
+                        var scoreGridStore = Ext.getCmp('score-grid').getStore();
+                        scoreGridStore.load({ params : { s_id : s_id } });
+                        //显示详细
+                        var form = scope.form.getForm();
+                        //加载头像
+                        //$("#image img").attr("src", record.get('image/url'));
                     }
                 }
             }),
@@ -96,20 +103,23 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
     createForm : function() {
         var store = new Pf.util.FieldsJsonStore({
             root : 'root',
-            url  : '#',
-            fields : ['course','grade','score','remark']
+            url  : '/homes/student_score.json',
+            fields : ['course/name','grade','score','remark','score_type']
         });
         var cm = new Ext.grid.ColumnModel({
             columns: [
-                { header: '科目' , dataIndex: 'course', width : 50 },
-                { header: '学期' , dataIndex: 'grade',width : 50 },
+                { header: '科目' , dataIndex: 'course/name', width : 50 },
+                { header: '学期' , dataIndex: 'grade',width  : 50 },
                 { header: '成绩' , dataIndex: 'score', width : 50 },
+                { header: '成绩评级' , dataIndex: 'score_type', width : 50 },
                 { header: '备注' , dataIndex: 'remark' },
             ],
             defaults: { menuDisabled : true, sortable : true }
         });
         var grid = new Ext.grid.EditorGridPanel({
+            id : 'score-grid',
             store: store,
+            loadMask :true,
             cm   : cm,
             height : 200,
             title : "学生成绩",
@@ -137,7 +147,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                         }]
                     })]
                 }, {
-                    defaults : { anchor : '95%' },
+                    defaults : { anchor : '95%', readOnly : true },
                     defaultType : 'textfield',
                     columnWidth: .25,
                     layout: 'form',
@@ -155,7 +165,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                       name: 'classes',
                     }]
                 },{
-                    defaults : { anchor : '95%' },
+                    defaults : { anchor : '95%' ,readOnly : true},
                     defaultType : 'textfield',
                     columnWidth: .45,
                     layout: 'form',
@@ -179,6 +189,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                       xtype: 'textarea',
                       id: 'bio',
                       height: 150,
+                      readOnly : true,
                       anchor: '98%'
                   }]
               }),
@@ -191,9 +202,5 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
     printHandler : function  () {
       
     },
-
-    updateHandler : function  () {
-      // body...
-    }
 
 });
