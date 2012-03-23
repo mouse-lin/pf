@@ -39,5 +39,4 @@ class StudentsController < ApplicationController
    rescue => e
       render_error e.message,'text/html'
   end
-
 end
