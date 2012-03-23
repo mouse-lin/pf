@@ -1,4 +1,7 @@
 Pf::Application.routes.draw do
+  match "/master" => "master#index"
+  match "/master/import" => "master#import"
+  
   resources :homes do
     collection do
       get "index"

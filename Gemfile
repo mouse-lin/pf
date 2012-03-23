@@ -14,6 +14,8 @@ gem 'rd_searchlogic', '3.0.1', :require => 'searchlogic'
 gem 'kindeditor'
 gem 'rmagick'
 gem 'paperclip', '~> 2.3'
+gem 'roo', '1.3.11'
+
 
 # Use unicorn as the web server
 # gem 'unicorn'

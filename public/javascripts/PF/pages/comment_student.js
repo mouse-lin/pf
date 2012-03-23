@@ -312,7 +312,7 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                     form.reset();
                     form.loadRecord(record);
                     //加载头像
-                    //$("#image img").attr("src", record.get('image/url'));
+                    $("#image img").attr("src", record.get('image/url'));
                     currentStu = record;
                     scope.addComment(currentStu.get('comment'), true);
 

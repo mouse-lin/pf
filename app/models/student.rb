@@ -16,5 +16,6 @@ class Student < Person
   def grade
     '优秀'
   end
+
 end
 

@@ -79,6 +79,8 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             border: false,
             containerScroll: true,
             loadMask : true,
+            frame : true,
+            collapseMode: 'mini',
             width: 250,
             region: 'west',
             split: true,
@@ -107,7 +109,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                         form.reset();
                         form.loadRecord(record);
                         //加载头像
-                        //$("#image img").attr("src", record.get('image/url'));
+                        $("#image img").attr("src", record.get('image/url'));
                     }
                 }
             }),
@@ -212,9 +214,6 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                     }, {
                       fieldLabel: '班级',
                       name: 'classes/name',
-                    }, {
-                      fieldLabel: '评级',
-                      name: 'grade',
                     }]
                 },{
                     defaults : { anchor : '95%' ,readOnly : true},
@@ -231,7 +230,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                       xtype : 'textarea',
                       fieldLabel: '备注',
                       name: 'remark',
-                      height : 80
+                      //height : 80
                     }]
                 }]
               },new Ext.form.FieldSet({
