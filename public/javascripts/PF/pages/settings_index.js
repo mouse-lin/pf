@@ -1,5 +1,6 @@
 Pf.settings.homeIndex = { 
     panel: function(){ 
+        var _this = this;
         var grid = new Pf.classes.student();
         var studentScoreGrid = this.createStudentScoreGrid();
         var studentDetailFormPanel = this.createStudentDetail();
@@ -19,7 +20,28 @@ Pf.settings.homeIndex = {
                     layout: "border",
                     items: [
                         {region: "center",layout: "border", width: 900, items: grid },
-                        {region:"east",width: 500, layout: "border", items:[ studentDetailFormPanel, studentScoreGrid]}]   
+                        {region:"east",width: 500,layout: "border", items:new Ext.Panel({
+                            layout: "border",
+                            region: "center",
+                            tbar: [{ 
+                                 iconCls: "add",
+                                 text: "添加",
+                                 handler: function(){
+                                     Ext.Msg.confirm('提示', "是否确定保存?", function(button){ 
+                                        if(button != "no"){
+                                            if(Ext.getCmp("studentNumber").getValue() != "" &&  Ext.getCmp("studentName") != "" )
+                                            { 
+                                                _this.studentUpdateOrSave("create");
+                                            }
+                                            else
+                                                Ext.Msg.alert("提示"," 姓名和学号不能为空!") 
+                                        }
+                                     })
+                                 }
+                             }],
+                            items: [ studentDetailFormPanel, studentScoreGrid]   
+                        })}
+                    ]
                 },
                 { title:  "学生主档", html: "mouse"  },
             ]
@@ -43,7 +65,6 @@ Pf.settings.homeIndex = {
             { header: '初三第二学期', sortable: true, dataIndex: ''},
         ]);
         var grid_name = new Ext.grid.EditorGridPanel({ 
-            viewConfig: { forceFit: true },
             store: studentScoreStore,
             loadMask: true,
             cm: cm,
@@ -55,6 +76,7 @@ Pf.settings.homeIndex = {
     },
 
     createStudentDetail: function(){ 
+        var _this = this;
         var sexData = [['男','男'],['女','女']];
         var sexCombo = new Ext.form.ComboBox({ 
             valueField: 'sex',
@@ -71,41 +93,6 @@ Pf.settings.homeIndex = {
             })
         });
           
-        //保存更新按钮
-        function onSave(){ 
-            var grid = Ext.getCmp("studentShowGrid");
-            var record = grid.getSelectionModel().getSelected();
-            if(!record){ Ext.Msg.alert("提示","请选择学生") }
-            else{  
-                Ext.Msg.confirm("提示","是否确定保存更改",function(button){ 
-                    if(button != "no"){ 
-                        Ext.getCmp("studentDetailFormPanel").getForm().submit({ 
-                              clientValidation: true,
-                              method: "POST",
-                              waitMsg: "保存中",
-                              params: { id: record.data.id },
-                              url: "/students/update_student",
-                              success: function(form,action){ 
-                                  Ext.Msg.alert('提示', "保存成功");
-                                  grid.store.on("load",function(){ 
-                                      var new_record = Ext.getCmp("studentShowGrid").getSelectionModel().getSelected();
-                                      if(new_record)
-                                      {   
-                                          $("#image img").attr("src",new_record.data["image/url(:thumb)"] );
-                                      }
-                                  });
-                                  grid.store.reload();
-                                  Ext.getCmp("photoField").reset();
-                              },
-                              failure: function(){ 
-                                  Ext.Msg.alert('提示', "保存失败");
-                              }
-                        });
-                    }
-                })
-            }
-        };
-
         //判断上传文件
         function onFileSelect(field){
             var value = field.getValue();
@@ -122,7 +109,7 @@ Pf.settings.homeIndex = {
         };
 
         var formPanel = new Ext.form.FormPanel({ 
-           title: "test",
+           title: "详细信息",
            region: "center",
            id: "studentDetailFormPanel",
            autoScroll : true,
@@ -130,7 +117,13 @@ Pf.settings.homeIndex = {
            frame: true,
            labelAlign : 'right',
            buttonAlign: 'center',
-           buttons: [{ text: "更新", handler: function(){ onSave() } }],
+           buttons: [
+              { text: "更新", handler: function(){ _this.studentUpdateOrSave("update") } },
+              { text: "重置", handler: function(){ 
+                  Ext.getCmp("studentDetailFormPanel").getForm().reset()  
+                  $("#image img").attr("src","/images/Temp.png" );
+              }}
+           ],
            items: [{ 
               layout: 'column',
               items:[
@@ -154,11 +147,15 @@ Pf.settings.homeIndex = {
                   items: [
                   { 
                       fieldLabel: "学号",
-                      name: "number"
+                      name: "number",
+                      id: "studentNumber",
+                      allowBlank: false,
                   },
                   { 
                       fieldLabel: "姓名",
-                      name: "name"
+                      name: "name",
+                      id: "studentName",
+                      allowBlank: false,
                   },
                   { 
                       fieldLabel: "班级",
@@ -189,5 +186,52 @@ Pf.settings.homeIndex = {
            }]
         });
         return formPanel;
+    },
+      
+    studentUpdateOrSave: function(type){ 
+        //保存更新按钮
+        function request(record,grid){ 
+            if(record == undefined)
+                record = { data:{ id: "save" } };
+            Ext.getCmp("studentDetailFormPanel").getForm().submit({ 
+                method: "POST",
+                waitMsg: "保存中",
+                params: { id: record.data.id },
+                url: "/students/update_student",
+                success: function(form,action){ 
+                    Ext.Msg.alert('提示', "保存成功");
+                    if(grid){  
+                        grid.store.on("load",function(){ 
+                            var new_record = Ext.getCmp("studentShowGrid").getSelectionModel().getSelected();
+                            if(new_record)
+                            {   
+                                $("#image img").attr("src",new_record.data["image/url(:thumb)"] );
+                            }
+                        });
+                        grid.store.reload();
+                        Ext.getCmp("photoField").reset();
+                     }else{ 
+                        Ext.getCmp("studentShowGrid").store.reload();
+                     } 
+                },
+                failure: function(){ 
+                    Ext.Msg.alert('提示', "保存失败");
+                }
+            });
+        };
+        if(type == "update"){  
+            var grid = Ext.getCmp("studentShowGrid");
+            var record = grid.getSelectionModel().getSelected();
+            if(!record){ Ext.Msg.alert("提示","请选择学生") }
+            else{  
+                Ext.Msg.confirm("提示","是否确定保存更改",function(button){ 
+                    if(button != "no"){ 
+                        request(record,grid);
+                    }
+                })
+            };
+         }else{ 
+            request();
+         }
     }
 }

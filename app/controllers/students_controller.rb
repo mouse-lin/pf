@@ -34,7 +34,7 @@ class StudentsController < ApplicationController
         :name => params["name"],
       }
       data["image"] = params["photo"] if(params["photo"])
-      Student.find(params["id"]).update_attributes!(data)
+      params["id"] == "save"? Student.create(data) : Student.find(params["id"]).update_attributes!(data)
       render_json "success", "text/html"
    rescue => e
       render_error e.message,'text/html'

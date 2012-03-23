@@ -56,11 +56,6 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
         var _this = this;
         var tbar = [
             { 
-                iconCls: "add",
-                text: "添加",
-                handler: function(){  _this.addSingleStudent().show() }
-            },
-            { 
                 iconCls: "delete",
                 text: "删除",
                 handler: function(){ 
