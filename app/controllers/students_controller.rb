@@ -32,6 +32,7 @@ class StudentsController < ApplicationController
         :phone => params["phone"],
         :home => params["home"],
         :name => params["name"],
+        :classes_id => params["classes_id"]
       }
       data["image"] = params["photo"] if(params["photo"])
       params["id"] == "save"? Student.create(data) : Student.find(params["id"]).update_attributes!(data)

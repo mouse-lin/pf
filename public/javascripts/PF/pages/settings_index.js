@@ -6,9 +6,10 @@ Pf.settings.homeIndex = {
         var studentDetailFormPanel = this.createStudentDetail();
         grid.store.load();
         grid.on('cellclick', function(grid, rowIndex){ 
-            var record = grid.store.getAt(rowIndex).data;
-            studentDetailFormPanel.getForm().setValues(record);
-            $("#image img").attr("src",record["image/url(:thumb)"] );
+            var record = grid.store.getAt(rowIndex);
+            studentScoreGrid.store.load({ params: { s_id: record.data.id }});
+            studentDetailFormPanel.getForm().loadRecord(record);
+            $("#image img").attr("src",record.data["image/url(:thumb)"] );
         });
 
         var panel = new Ext.TabPanel({ 
@@ -19,7 +20,7 @@ Pf.settings.homeIndex = {
                 { title:  "学生主档", 
                     layout: "border",
                     items: [
-                        {region: "center",layout: "border", width: 900, items: grid },
+                        {region: "center",layout: "border",  items: grid },
                         {region:"east",width: 500,layout: "border", items:new Ext.Panel({
                             layout: "border",
                             region: "center",
@@ -48,21 +49,26 @@ Pf.settings.homeIndex = {
         });
         return panel;
     },
-
+        
+    //创建学生成绩grid
     createStudentScoreGrid: function(){ 
         var studentScoreStore = new Pf.util.FieldsJsonStore({ 
             fields: [
+                "id",
+                "grade",
+                "course/name",
+                "score",
+                "remark"
             ],
             root : 'root',
-            url  : '/homes/get_classes_students.json',
+            url  : '/homes/student_score.json',
         });
         var cm = new Ext.grid.ColumnModel([
-            { header: '初一第一学期', sortable: true, dataIndex: ''},
-            { header: '初一第二学期', sortable: true, dataIndex: ''},
-            { header: '初二第一学期', sortable: true, dataIndex: ''},
-            { header: '初二第二学期', sortable: true, dataIndex: ''},
-            { header: '初三第一学期', sortable: true, dataIndex: ''},
-            { header: '初三第二学期', sortable: true, dataIndex: ''},
+            new Ext.grid.RowNumberer(),
+            { header: '学期', sortable: true, dataIndex: 'grade'},
+            { header: '科目', sortable: true, dataIndex: 'course/name'},
+            { header: '成绩', sortable: true, dataIndex: 'score'},
+            { header: '备注', width: 150,sortable: true, dataIndex: 'remark'},
         ]);
         var grid_name = new Ext.grid.EditorGridPanel({ 
             store: studentScoreStore,
@@ -70,6 +76,11 @@ Pf.settings.homeIndex = {
             cm: cm,
             height: 250,
             region: "south",
+            tbar: [{ 
+                iconCls:"add", text:"成绩录入",handler: function(){   alert("niaho") }
+            },{ 
+                iconCls:"table_edit", text:"成绩更新",handler: function(){   alert("niaho") }
+            }],
             bbar : new Pf.util.Bbar({ store : studentScoreStore }),
         });
         return  grid_name;
@@ -92,6 +103,25 @@ Pf.settings.homeIndex = {
                 data: sexData,
             })
         });
+
+        var classCombox = new Ext.form.ComboBox({
+            hiddenName:  "classes_id",
+            fieldLabel: "班级",
+            triggerAction : 'all',
+            displayField  : 'name',
+            valueField: 'id',
+            mode          : 'remote',
+            width : 180,
+            editable: false,
+            forceSelection : true,
+            emptyText : '请选择班级',
+            store : new Pf.util.FieldsJsonStore({
+                url : '/homes/get_classes.json',
+                fields  : ["id", "name"],
+                autoLoad: true 
+            }),
+         });
+
           
         //判断上传文件
         function onFileSelect(field){
@@ -157,10 +187,11 @@ Pf.settings.homeIndex = {
                       id: "studentName",
                       allowBlank: false,
                   },
-                  { 
-                      fieldLabel: "班级",
-                      name: "classes/name"
-                  },
+                  classCombox,
+                 // { 
+                 //     fieldLabel: "班级",
+                 //     name: "classes/name"
+                 // },
                      sexCombo,
                   { 
                       fieldLabel: "联系电话",

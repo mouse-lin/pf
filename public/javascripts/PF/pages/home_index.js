@@ -70,14 +70,6 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                 fields  : ["id", "name"],
                 autoLoad: false
             }),
-            listeners : {
-                select : function(combo, record, index) {
-                    var store = Ext.getCmp("student-grid").getStore();
-                    store.removeAll();
-                    store.setBaseParam("c_id", record.get("id"));
-                    store.reload();
-                }
-            }
         });
 
         var grid = new Ext.grid.EditorGridPanel({

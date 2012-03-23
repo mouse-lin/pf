@@ -6,6 +6,7 @@ Pf::Application.routes.draw do
       get 'get_students'
       get 'student_detail'
       post 'student_score'
+      get 'student_score'
       get 'comment_student'
       post 'comment_type_tree_nodes'
       get 'commets_by_type'

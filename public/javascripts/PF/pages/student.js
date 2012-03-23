@@ -30,6 +30,7 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
                 "sex",
                 "phone",
                 "home",
+                "classes_id",
                 "classes/name",
                 "image/url(:thumb)",
             ],
