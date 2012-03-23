@@ -21,6 +21,7 @@ Pf::Application.routes.draw do
       get "get_all_students"
       get "student_total_score"
       post "destroy_student"
+      post "update_student"
     end
     member do
       post "update_student_comment"

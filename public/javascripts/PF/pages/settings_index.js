@@ -5,8 +5,9 @@ Pf.settings.homeIndex = {
         var studentDetailFormPanel = this.createStudentDetail();
         grid.store.load();
         grid.on('cellclick', function(grid, rowIndex){ 
-            studentDetailFormPanel.getForm().setValues(grid.store.getAt(rowIndex).data);
-            $("#image img").attr("src", '/images/Temp.png');
+            var record = grid.store.getAt(rowIndex).data;
+            studentDetailFormPanel.getForm().setValues(record);
+            $("#image img").attr("src",record["image/url"] );
         });
 
         var panel = new Ext.TabPanel({ 
@@ -56,7 +57,6 @@ Pf.settings.homeIndex = {
     createStudentDetail: function(){ 
         var sexData = [['男','男'],['女','女']];
         var sexCombo = new Ext.form.ComboBox({ 
-            //id: 'targetCombo',
             valueField: 'sex',
             fieldLabel: "性别",
             triggerAction: 'all',
@@ -68,19 +68,69 @@ Pf.settings.homeIndex = {
             store: new Ext.data.SimpleStore({ 
                 fields: ['sex', 'sexName'],
                 data: sexData,
-                //autoLoad: true,
             })
         });
+          
+        //保存更新按钮
+        function onSave(){ 
+            var grid = Ext.getCmp("studentShowGrid");
+            var record = grid.getSelectionModel().getSelected();
+            if(!record){ Ext.Msg.alert("提示","请选择学生") }
+            else{  
+                Ext.Msg.confirm("提示","是否确定保存更改",function(button){ 
+                    if(button != "no"){ 
+                        Ext.getCmp("studentDetailFormPanel").getForm().submit({ 
+                              clientValidation: true,
+                              method: "POST",
+                              waitMsg: "保存中",
+                              params: { id: record.data.id },
+                              url: "/students/update_student",
+                              success: function(form,action){ 
+                                  Ext.Msg.alert('提示', "保存成功");
+                                  grid.store.on("load",function(){ 
+                                      var new_record = Ext.getCmp("studentShowGrid").getSelectionModel().getSelected();
+                                      if(new_record)
+                                      {   
+                                          $("#image img").attr("src",new_record.data["image/url"] );
+                                      }
+                                  });
+                                  grid.store.reload();
+                                  Ext.getCmp("photoField").reset();
+                              },
+                              failure: function(){ 
+                                  Ext.Msg.alert('提示', "保存失败");
+                              }
+                        });
+                    }
+                })
+            }
+        };
+
+        //判断上传文件
+        function onFileSelect(field){
+            var value = field.getValue();
+            var pattern = /\.jpg$|\.jpeg$|\.bmp$|\.png|\.gif$|\.png&/i;
+            if (!pattern.test(value)){
+                Ext.Msg.show({
+                    title:"警告",
+                    msg:"必须是JPG，GIF，PNG，BMP格式图片文件！",
+                    buttons: Ext.MessageBox.OK ,
+                    icon: Ext.MessageBox.INFO
+                });
+                field.setValue("");
+            };
+        };
 
         var formPanel = new Ext.form.FormPanel({ 
            title: "test",
            region: "center",
+           id: "studentDetailFormPanel",
            autoScroll : true,
            fileUpload: true,
            frame: true,
            labelAlign : 'right',
            buttonAlign: 'center',
-           buttons: [{ text: "更新", handler: function(){ alert("nihai") } }],
+           buttons: [{ text: "更新", handler: function(){ onSave() } }],
            items: [{ 
               layout: 'column',
               items:[
@@ -115,8 +165,6 @@ Pf.settings.homeIndex = {
                       name: "classes/name"
                   },
                      sexCombo,
-                     // fieldLabel: "性别",
-                     // name: "sex"
                   { 
                       fieldLabel: "联系电话",
                       name: "phone"
@@ -130,13 +178,13 @@ Pf.settings.homeIndex = {
                       xtype: 'fileuploadfield',
                       allowBlank : true,
                       emptyText: '选择',
+                      id: "photoField",
                       fieldLabel: '头像',
-                      name: 'size_sheet',
+                      name: 'photo',
                       buttonText: '上传',
-                      listeners: { 'fileselected' : {fn: this.onFileSelect, scope: this} }
+                      listeners: { 'fileselected' : {fn: onFileSelect, scope: this} }
                   }
-                  ]
-              }
+              ]}
             ]
            }]
         });

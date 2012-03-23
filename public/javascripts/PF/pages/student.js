@@ -31,6 +31,7 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
                 "phone",
                 "home",
                 "classes/name",
+                "image/url",
             ],
             root: 'root',
             url: '/students/get_all_students.json',
@@ -67,7 +68,7 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
                     var record = grid.getSelectionModel().getSelected();
                     if(!record){ Ext.Msg.alert("提示","请选择学生") }
                     else{  
-                        Ext.Msg.confirm('提示', "是否确定保存?", function(button){ 
+                        Ext.Msg.confirm('提示', "是否确定删除?", function(button){ 
                             if(button != "no"){
                                 Pf.util.loadMask.show();
                                 var studentId = record.id;

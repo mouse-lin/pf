@@ -18,9 +18,26 @@ class StudentsController < ApplicationController
     render_json Student.find(params[:s_id]).total_score_by_grade
   end
 
+  #删除学生
   def destroy_student
     Student.find(params[:id]).delete
     render_json "success"
+  end
+
+  #保存学生更新
+  def update_student
+      data = { 
+        :number => params["number"],
+        :sex => params["sex"], 
+        :phone => params["phone"],
+        :home => params["home"],
+        :name => params["name"],
+      }
+      data["image"] = params["photo"] if(params["photo"])
+      Student.find(params["id"]).update_attributes!(data)
+      render_json "success", "text/html"
+   rescue => e
+      render_error e.message,'text/html'
   end
 
 end
