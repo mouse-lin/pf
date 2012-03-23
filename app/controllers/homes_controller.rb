@@ -2,8 +2,12 @@ class HomesController < ApplicationController
   def index
   end
 
-  def get_classes_students
-    render_json Classes.find(params[:c_id]).students.number_like(params[:query]).order("#{params[:sort]} #{params[:dir]}").collect &fields_provider
+  def get_students
+    code = "Student.number_like(params[:query])"
+    result = eval( params[:c_id] ? code + ".classes_id_equals(params[:c_id])" : code)
+    total = result.count
+    result = result.order("#{params[:sort]} #{params[:dir]}").limit((params[:limit] || 25).to_i).offset(params[:start].to_i || 0).collect &fields_provider
+    render :json => { :root => result, :total => total }
   end
 
   def get_classes
@@ -26,7 +30,10 @@ class HomesController < ApplicationController
   end
 
   def commets_by_type
-    render_json CommentType.find(params[:ct_id]).comments.content_like(params[:query]).collect &fields_provider
+    result = CommentType.find(params[:ct_id]).comments.content_like(params[:query])
+    total = result.count
+    result = result.order("#{params[:sort]} #{params[:dir]}").limit((params[:limit] || 15)).offset(params[:start].to_i || 0).collect &fields_provider
+    render :json => { :root => result, :total => total }
   end
 
 end

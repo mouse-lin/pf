@@ -1,5 +1,10 @@
-<%= javascript_include_tag '/javascripts/PF/pages/comment_student.js' %>
+<style type="text/css" media="screen">
+  .x-grid3-cell-inner, .x-grid3-hd-inner {
+    white-space: pre-wrap;
+  }
+</style>
 
+<%= javascript_include_tag '/javascripts/PF/pages/comment_student.js' %>
 <script language="javascript" type="text/javascript">
     Ext.onReady(function() { 
         Pf.classes.commentStudent = new Pf.classes.commentStudent.MainPanel();

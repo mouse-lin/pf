@@ -32,7 +32,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
         var scope = this;
         var store = new Pf.util.FieldsJsonStore({
             root : 'root',
-            url  : '/homes/get_classes_students.json',
+            url  : '/homes/get_students.json',
             fields : [
                 "id",
                 'name',
@@ -45,8 +45,9 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                 'comment',
                 'image/url',
                 'grade'
-                ]
+            ]
         });
+        store.load();
 
         var cm = new Ext.grid.ColumnModel({
             columns: [
@@ -74,7 +75,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                     var store = Ext.getCmp("student-grid").getStore();
                     store.removeAll();
                     store.setBaseParam("c_id", record.get("id"));
-                    store.load();
+                    store.reload();
                 }
             }
         });
@@ -86,7 +87,7 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
             border: false,
             containerScroll: true,
             loadMask : true,
-            width: 200,
+            width: 250,
             region: 'west',
             split: true,
             title : "学生列表",
@@ -96,6 +97,11 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
                 layout : 'form',
                 labelWidth : 1,
                 items : ['班级:',classCombox, '学号查询：',new Ext.ux.form.SearchField({ emptyText : '请输入学号' ,store: store, width: 180 }) ]
+            }),
+            bbar: new Ext.PagingToolbar({
+                pageSize: 25,
+                store: store,
+                plugins: new Ext.ux.SlidingPager()
             }),
             sm : new Ext.grid.RowSelectionModel({
                 listeners : {
@@ -126,25 +132,57 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
         });
         var cm = new Ext.grid.ColumnModel({
             columns: [
-                { header: '科目' , dataIndex: 'course/name', width : 50 },
                 { header: '学期' , dataIndex: 'grade',width  : 50 },
-                { header: '成绩' , dataIndex: 'score', width : 50 },
+                { header: '科目' , dataIndex: 'course/name', width : 50,
+                  summaryType: 'count',
+                  summaryRenderer: function(v, params, data) { return ((v === 0 || v > 1) ? '(' + v + ' 科目)' : '(1 科目)'); }
+                },
+                { header: '成绩' , dataIndex: 'score', width : 50, 
+                  summaryType: 'sum',
+                  summaryRenderer: function(v, params, data) { return "总分: " + ( v ); }
+                },
                 { header: '成绩评级' , dataIndex: 'score_type', width : 50 },
                 { header: '备注' , dataIndex: 'remark' },
             ],
             defaults: { menuDisabled : true, sortable : true }
         });
+
+        var reader = new Ext.data.JsonReader({
+            root : 'root',
+            fields : ['course/name','grade','score','remark','score_type']
+        });
+
+        // utilize custom extension for Group Summary
+        var summary = new Ext.ux.grid.GroupSummary();
+        var ds = new Ext.data.GroupingStore({
+            reader: reader,
+            url  : '/homes/student_score.json',
+            groupField: 'grade'
+        });
+        ds.on('beforeload', function(st, options) {
+            st.setBaseParam('fields[]',store.fields.keys);
+        });
+
         var grid = new Ext.grid.EditorGridPanel({
             id : 'score-grid',
-            store: store,
-            loadMask :true,
-            cm   : cm,
-            height : 200,
-            sm : new Ext.grid.RowSelectionModel({}),
             title : "学生成绩",
+            store: ds,
+            cm   : cm,
+            loadMask :true,
+            height : 200,
+            frame : true,
+            enableColumnMove: false,
+            plugins: summary,
             stripeRows: true,
             viewConfig: { forceFit: true },
+            view: new Ext.grid.GroupingView({
+                forceFit: true,
+                showGroupName: false,
+                enableNoGroups: false,
+                enableGroupingMenu: false,
+            }),
         });
+
         var form = new Ext.FormPanel({ 
             region : 'center',
             frame : true,

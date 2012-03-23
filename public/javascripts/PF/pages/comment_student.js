@@ -139,7 +139,9 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
             emptyText   : '请选择学生',
             editable    : false,
             onTrigger2Click : function() {
-                if (currentClasses != undefined) { scope.studentGrid.getStore().reload(); };
+                //if (currentClasses != undefined) {
+                  scope.studentGrid.getStore().load(); 
+                //};
                 scope.studentWin.show();
             }
         });
@@ -177,10 +179,10 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                 name: 'sex',
                 readOnly: true
               },{
-                fieldLabel: '评级',
-                name: 'grade',
-                readOnly: true
-              }, {
+              //  fieldLabel: '评级',
+              //  name: 'grade',
+              //  readOnly: true
+              //}, {
                 fieldLabel: '备注',
                 name: 'remark',
                 readOnly: true
@@ -214,6 +216,7 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
             height : 230,
             collapsible: true,
             loadMask : true,
+            frame : true,
             //collapseMode: 'mini',
             store: store,
             cm   : cm,
@@ -229,7 +232,7 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
         var scope = this;
         var store = new Pf.util.FieldsJsonStore({
             root : 'root',
-            url  : '/homes/get_classes_students.json',
+            url  : '/homes/get_students.json',
             fields : [
                 "id",
                 'name',
@@ -241,9 +244,10 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                 'classes/name',
                 'comment',
                 'image/url',
-                'grade',
+                //'grade',
               ]
         });
+        store.load();
 
         var cm = new Ext.grid.ColumnModel({
             columns: [
@@ -299,6 +303,7 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
                     '学号查询: ', ' ', new Ext.ux.form.SearchField({ store: store, width: 220 })
                     ]
             }),
+            bbar: new Pf.util.Bbar({ store : store }),
             sm : new Ext.grid.RowSelectionModel({ }),
             listeners: { 
                 celldblclick : function(grid,rowIndex,columnIndex) {
