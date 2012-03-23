@@ -1,0 +1,37 @@
+<%= kindeditor_javacript_include_tag%>
+ <textarea id="kindeditor"  rows="28" cols="95" >
+ <table style="width:100%;" cellpadding="1" cellspacing="2" border="1" bordercolor="#CCCCCC">
+    <tbody>
+     <tr>
+       <td width=50>&nbsp;<%= image_tag @student.image.url(:thumb) %></td>
+       <td><p>&nbsp;姓名：<%=@student.name%> </p></td>
+     </tr>
+     <tr>
+     <td>&nbsp;学号：</td>
+     <td>&nbsp;<%=@student.number%></td>
+     </tr>
+     <tr>
+     <td><p>&nbsp;性别：</p>
+     </td>
+     <td>&nbsp;<%=@student.sex %></td>
+     </tr>
+     <tr>
+     <td>&nbsp;班级：</td>
+     <td>&nbsp;<%=@student.classes.name%></td>
+     </tr>
+     <tr><td>&nbsp;电话：</td>
+     <td>&nbsp;<%=@student.phone%></td>
+     </tr>
+     <tr><td>&nbsp;住址：</td>
+     <td>&nbsp;<%=@student.home%></td>
+     </tr>
+     <tr><td>&nbsp;备注：</td>
+     <td><p>&nbsp;<%=@student.remark%></p>
+     </td>
+     </tr>
+     <tr><td>评语：</td>
+     <td height=120>&nbsp;<%=@student.comment%></td>
+     </tr>
+    </tbody>
+  </table>
+</textarea>

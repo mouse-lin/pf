@@ -251,8 +251,22 @@ Pf.classes.homeIndex.MainPanel = Ext.extend(Ext.Panel, {
         return form;
     },
 
-    printHandler : function  () {
-      
+    printHandler : function() {
+        var record = Ext.getCmp("student-grid").getSelectionModel().getSelected();
+        if(record){  
+            var url = 'students/print?id=' + record.data.id;
+            var win = new Ext.Window({ 
+                title: "资料打印",
+                width: 800, 
+                height: 500,
+                resizable: false,
+                modal: true,
+                constrain: true,
+                items: { html:'<iframe src='+ url + " frameborder='0'  width='100%' height='100%'></iframe>"}
+            });
+            win.show();
+         }else
+             Ext.Msg.alert("提示","请选择学生");
     },
 
 });

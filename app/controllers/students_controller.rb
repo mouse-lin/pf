@@ -1,4 +1,5 @@
 class StudentsController < ApplicationController
+  layout"application", :except => [ :print ]
   #获取学生信息
   def get_all_students
     students = Student.all.collect &fields_provider
@@ -39,5 +40,9 @@ class StudentsController < ApplicationController
       render_json "success", "text/html"
    rescue => e
       render_error e.message,'text/html'
+  end
+
+  def print
+    @student = Student.find(params[:id])
   end
 end
