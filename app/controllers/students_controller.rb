@@ -42,6 +42,16 @@ class StudentsController < ApplicationController
       render_error e.message,'text/html'
   end
 
+  def update_score
+    params[:jsonData].each do |j|
+      j.delete("course/name")
+    end
+    Student.find(params[:studentId]).update_attributes({ :course_scores_attributes => params[:jsonData]})
+    render_json "success"
+  rescue => e
+    render_error e.message
+  end
+
   def print
     @student = Student.find(params[:id])
   end

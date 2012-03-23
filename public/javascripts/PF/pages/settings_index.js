@@ -67,10 +67,11 @@ Pf.settings.homeIndex = {
             new Ext.grid.RowNumberer(),
             { header: '学期', sortable: true, dataIndex: 'grade'},
             { header: '科目', sortable: true, dataIndex: 'course/name'},
-            { header: '成绩', sortable: true, dataIndex: 'score'},
+            { header: '成绩', sortable: true, dataIndex: 'score',editor:new Ext.form.NumberField() },
             { header: '备注', width: 150,sortable: true, dataIndex: 'remark'},
         ]);
-        var grid_name = new Ext.grid.EditorGridPanel({ 
+        var grid = new Ext.grid.EditorGridPanel({ 
+            id: "studentCourseScore",
             store: studentScoreStore,
             loadMask: true,
             cm: cm,
@@ -79,11 +80,31 @@ Pf.settings.homeIndex = {
             tbar: [{ 
                 iconCls:"add", text:"成绩录入",handler: function(){   alert("niaho") }
             },{ 
-                iconCls:"table_edit", text:"成绩更新",handler: function(){   alert("niaho") }
+                iconCls:"table_edit", text:"成绩更新",handler: function(){  
+                    var jsonData = Ext.getCmp("studentCourseScore").store.getModifiedRecords();
+                    if(!jsonData[0]){ Ext.Msg.alert("提示","没有需要更新的数据"); }
+                    else{  
+                        var jsonObject = [];
+                        Ext.each(jsonData,function(data){
+                            jsonObject.push(data.data);
+                        });
+                        Ext.Ajax.request({
+                            url: "/students/update_score.json",
+                            method:  "POST",
+                            jsonData: { jsonData: jsonObject, studentId: Ext.getCmp("studentShowGrid").getSelectionModel().getSelected().data.id } ,
+                            success: function(response, opts){
+                                Ext.Msg.alert("提示","保存成功");
+                            },
+                            failure: function(response, opts){
+                                Ext.Msg.alert("提示","保存失败");
+                            }
+                        })
+                    }
+                }
             }],
             bbar : new Pf.util.Bbar({ store : studentScoreStore }),
         });
-        return  grid_name;
+        return  grid;
     },
 
     createStudentDetail: function(){ 

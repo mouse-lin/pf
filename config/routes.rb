@@ -27,6 +27,7 @@ Pf::Application.routes.draw do
       get "print"
       post "destroy_student"
       post "update_student"
+      post "update_score"
     end
     member do
       post "update_student_comment"
