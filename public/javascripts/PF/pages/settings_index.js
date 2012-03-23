@@ -46,7 +46,7 @@ Pf.settings.homeIndex = {
             store: studentScoreStore,
             loadMask: true,
             cm: cm,
-            height: 300,
+            height: 250,
             region: "south",
             bbar : new Pf.util.Bbar({ store : studentScoreStore }),
         });
@@ -76,6 +76,7 @@ Pf.settings.homeIndex = {
            title: "test",
            region: "center",
            autoScroll : true,
+           fileUpload: true,
            frame: true,
            labelAlign : 'right',
            buttonAlign: 'center',
@@ -96,7 +97,7 @@ Pf.settings.homeIndex = {
                   })]
              },
               { 
-                  defaults : { anchor : '95%'},
+                  defaults : { anchor : '95%', },
                   columnWidth: 1,
                   defaultType : 'textfield',
                   layout: "form",
@@ -125,6 +126,15 @@ Pf.settings.homeIndex = {
                       fieldLabel: "住址",
                       name: "home"
                   },
+                  {  
+                      xtype: 'fileuploadfield',
+                      allowBlank : true,
+                      emptyText: '选择',
+                      fieldLabel: '头像',
+                      name: 'size_sheet',
+                      buttonText: '上传',
+                      listeners: { 'fileselected' : {fn: this.onFileSelect, scope: this} }
+                  }
                   ]
               }
             ]

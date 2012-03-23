@@ -11,6 +11,9 @@ gem "devise"
 gem "mongrel", ">=1.2.0.pre2"
 gem "rake", "0.8.7"
 gem 'rd_searchlogic', '3.0.1', :require => 'searchlogic'
+gem 'kindeditor'
+gem 'rmagick'
+gem 'paperclip', '~> 2.3'
 
 # Use unicorn as the web server
 # gem 'unicorn'
