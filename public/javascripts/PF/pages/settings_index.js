@@ -7,7 +7,7 @@ Pf.settings.homeIndex = {
         grid.on('cellclick', function(grid, rowIndex){ 
             var record = grid.store.getAt(rowIndex).data;
             studentDetailFormPanel.getForm().setValues(record);
-            $("#image img").attr("src",record["image/url"] );
+            $("#image img").attr("src",record["image/url(:thumb)"] );
         });
 
         var panel = new Ext.TabPanel({ 
@@ -91,7 +91,7 @@ Pf.settings.homeIndex = {
                                       var new_record = Ext.getCmp("studentShowGrid").getSelectionModel().getSelected();
                                       if(new_record)
                                       {   
-                                          $("#image img").attr("src",new_record.data["image/url"] );
+                                          $("#image img").attr("src",new_record.data["image/url(:thumb)"] );
                                       }
                                   });
                                   grid.store.reload();

@@ -31,7 +31,7 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
                 "phone",
                 "home",
                 "classes/name",
-                "image/url",
+                "image/url(:thumb)",
             ],
             root: 'root',
             url: '/students/get_all_students.json',
