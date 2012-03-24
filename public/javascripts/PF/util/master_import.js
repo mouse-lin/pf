@@ -1,3 +1,10 @@
+//Usage: new Pf.util.ImportXlsBtn({
+//    actionName : 'the model you handling',
+//    callBackStore : 'this configStroe will be reloaded after import successfully',
+//    ...anthor Ext.Button configs...
+//});
+//
+//Returning: An Ext.Button.
 
 Pf.util.ImportXlsBtn = Ext.extend(Ext.Button,{
     constructor : function(config){
