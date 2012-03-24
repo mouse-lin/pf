@@ -32,6 +32,7 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
                 "home",
                 "classes_id",
                 "classes/name",
+                "type",
                 "image/url(:thumb)",
             ],
             root: 'root',
@@ -41,11 +42,15 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
     },
 
     initCm: function(){ 
+        function changeType(value, metaData){ 
+            return value == "Student"?  "学生" : "教师"
+        };
         var cm = new Ext.grid.ColumnModel([
             new Ext.grid.RowNumberer(),
             { header: '学号', sortable: true, dataIndex: 'number'},
             { header: '姓名', sortable: true, dataIndex: 'name'},
             { header: '班级', sortable: true, dataIndex: 'classes/name'},
+            { header: '身份', sortable: true, dataIndex: 'type', renderer: changeType},
             { header: '性别', sortable: true, dataIndex: 'sex'},
             { header: '联系电话', sortable: true, dataIndex: 'phone'},
             { header: '住址', sortable: true, dataIndex: 'home'},
@@ -56,11 +61,11 @@ Pf.classes.student = Ext.extend(Ext.grid.EditorGridPanel,{
     initStudentTbar: function(){ 
         var _this = this;
         var tbar = [
-            { 
-                iconCls: "add",
-                text: "添加",
-                handler: function(){  _this.addSingleStudent().show() }
-            },
+           // { 
+           //     iconCls: "add",
+           //     text: "添加",
+           //     handler: function(){  _this.addSingleStudent().show() }
+           // },
             new Pf.util.ImportXlsBtn({ actionName : 'student', store : _this.store }),
             { 
                 iconCls: "delete",

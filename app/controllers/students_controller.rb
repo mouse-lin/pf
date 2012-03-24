@@ -2,8 +2,8 @@ class StudentsController < ApplicationController
   layout"application", :except => [ :print ]
   #获取学生信息
   def get_all_students
-    students = Student.all.collect &fields_provider
-    render_json students
+    people = Person.all.collect &fields_provider
+    render_json people
   end
 
   def update_student_comment
@@ -21,7 +21,7 @@ class StudentsController < ApplicationController
 
   #删除学生
   def destroy_student
-    Student.find(params[:id]).delete
+    Person.find(params[:id]).delete
     render_json "success"
   end
 
@@ -36,7 +36,11 @@ class StudentsController < ApplicationController
         :classes_id => params["classes_id"]
       }
       data["image"] = params["photo"] if(params["photo"])
-      params["id"] == "save"? Student.create(data) : Student.find(params["id"]).update_attributes!(data)
+      if params["id"] == "save"
+        params[:type] == "Student"? Student.create(data) : Teacher.create(data) 
+      else
+        Person.find(params["id"]).update_attributes!(data)
+      end
       render_json "success", "text/html"
    rescue => e
       render_error e.message,'text/html'

@@ -7,9 +7,13 @@ Pf.settings.homeIndex = {
         grid.store.load();
         grid.on('cellclick', function(grid, rowIndex){ 
             var record = grid.store.getAt(rowIndex);
-            studentScoreGrid.store.load({ params: { s_id: record.data.id }});
+            if(record.data.type == "Student")
+              studentScoreGrid.store.load({ params: { s_id: record.data.id }});
+            else
+              studentScoreGrid.store.removeAll();
             studentDetailFormPanel.getForm().loadRecord(record);
             $("#image img").attr("src",record.data["image/url(:thumb)"] );
+            Ext.getCmp("identityType").disable();
         });
 
         var panel = new Ext.TabPanel({ 
@@ -75,7 +79,7 @@ Pf.settings.homeIndex = {
             store: studentScoreStore,
             loadMask: true,
             cm: cm,
-            height: 250,
+            height: 230,
             region: "south",
             tbar: [{ 
                 iconCls:"add", text:"成绩录入",handler: function(){   alert("niaho") }
@@ -102,7 +106,7 @@ Pf.settings.homeIndex = {
                     }
                 }
             }],
-            bbar : new Pf.util.Bbar({ store : studentScoreStore }),
+           //bbar : new Pf.util.Bbar({ store : studentScoreStore }),
         });
         return  grid;
     },
@@ -124,6 +128,25 @@ Pf.settings.homeIndex = {
                 data: sexData,
             })
         });
+
+        var typeData = [['Student','学生'],['Teacher','教师']];
+        var typeCombo = new Ext.form.ComboBox({ 
+            hiddenName: 'type',
+            valueField: 'type',
+            fieldLabel: "身份",
+            id: "identityType",
+            triggerAction: 'all',
+            name: 'type',
+            displayField: 'name',
+            width: 180,
+            mode: 'local',
+            editable :  false,
+            store: new Ext.data.SimpleStore({ 
+                fields: ['type', 'name'],
+                data: typeData,
+            })
+        });
+
 
         var classCombox = new Ext.form.ComboBox({
             hiddenName:  "classes_id",
@@ -173,6 +196,7 @@ Pf.settings.homeIndex = {
               { text: "重置", handler: function(){ 
                   Ext.getCmp("studentDetailFormPanel").getForm().reset()  
                   $("#image img").attr("src","/images/Temp.png" );
+                  Ext.getCmp("identityType").enable();
               }}
            ],
            items: [{ 
@@ -197,7 +221,7 @@ Pf.settings.homeIndex = {
                   layout: "form",
                   items: [
                   { 
-                      fieldLabel: "学号",
+                      fieldLabel: "学号(编号)",
                       name: "number",
                       id: "studentNumber",
                       allowBlank: false,
@@ -223,6 +247,7 @@ Pf.settings.homeIndex = {
                       fieldLabel: "住址",
                       name: "home"
                   },
+                  typeCombo,
                   {  
                       xtype: 'fileuploadfield',
                       allowBlank : true,
