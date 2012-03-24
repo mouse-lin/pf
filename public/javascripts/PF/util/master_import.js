@@ -72,7 +72,8 @@ Pf.util.ImportXlsBtn = Ext.extend(Ext.Button,{
                 success: function(fp, action){
                     if(action.result == true) { 
                         scope.importWin.hide();
-                        if (scope.store) {scope.store.reload();};
+                        if (scope.callBackStore) {scope.callBackStore.reload();};
+                        Ext.Msg.alert("Success", "导入成功。");
                     }
                 },
                 failure : function(fp, action){

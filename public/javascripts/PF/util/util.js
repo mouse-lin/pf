@@ -24,7 +24,7 @@ Pf.util.FieldsJsonStore = Ext.extend(Ext.data.JsonStore, {
 
 Pf.util.Bbar = Ext.extend(Ext.PagingToolbar,{
     config : {
-        pageSize : 20,
+        pageSize : 25,
         emptyMsg : '没有记录',
         displayInfo : true,
         displayMsg    : "显示 {0} - {1} 总 {2} 条记录 ",

@@ -104,6 +104,7 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
             sm : new Ext.grid.RowSelectionModel({ }),
             listeners: { 
                 celldblclick : function(grid,rowIndex,columnIndex) {
+                    if (currentStu == undefined) {return ;};
                     var content = grid.getStore().getAt(rowIndex).get("content");
                     scope.addComment(content,false);
                 }
