@@ -32,6 +32,7 @@ Pf.settings.comment = {
                         layout: "border",
                         items: [commentTypeGrid]
                     },{ 
+                        collapsible: true,
                         region: "east",
                         layout: "border",
                         tbar:[{ text:"添加", iconCls: "add", handler: function(){
@@ -52,12 +53,13 @@ Pf.settings.comment = {
                 },{ 
                     region: "south",
                     layout: "border",
-                    height: 320,
+                    height: 310,
                     items: [{
                         region: "center",
                         layout: "border",
                         items: [commentGrid]
                     },{ 
+                        collapsible: true,
                         region: "east",
                         layout: "border",
                         tbar:[{ text: "添加", iconCls: "add", handler: function(){ 
