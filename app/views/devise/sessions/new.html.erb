@@ -1,12 +1,12 @@
 <%= stylesheet_link_tag "login-box.css" %>
 <div style="padding: 80px 0 0 400px;">
  <div id="login-box">
-  <H3>学生自动评分系统</H3>
+  <H3>中学生自动评分系统</H3>
   <br />
   <br />
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
     <div style="margin-left:100px;"><font color="red"><p class="alert"><%= alert %></p></font></div>
-  <div id="login-box-name" style="margin-top:20px;">账户:</div><div id="login-box-field" style="margin-top:20px;">
+  <div id="login-box-name" style="margin-top:20px;">邮箱:</div><div id="login-box-field" style="margin-top:20px;">
     <input name="user[email]" class="form-login" title="Username" value="" size="30" maxlength="2048" />
   </div>
   <div id="login-box-name">密码:</div><div id="login-box-field">

@@ -16,9 +16,9 @@ namespace :data do
         ps = [
           {
             :name => "小明",
-            :phone => "10086", 
+            :phone => "13811302112", 
             :home => "广东移不动", 
-            :number => "10086110120",
+            :number => "0814021",
             :sex => "男", 
             :type => "Student", 
             :classes => Classes.all.first, 
@@ -79,22 +79,27 @@ namespace :data do
 
         cmses = [
           { :content => "好评" },
-          { :content => "差评" },
-          { :content => "中评" },
-          { :content => "A" },
-          { :content => "B" },
-          { :content => "C" },
+          { :content => "表现良好" },
+          { :content => "很好" },
+          { :content => "表现很一般, 还需要努力" },
+          { :content => "进步很大" },
+          { :content => "very good" },
+          { :content => "good good study day day up" },
         ]
         Comment.destroy_all
         cms = Comment.create(cmses)
         cmtses = [
           { :name => "思想德语" },
           { :name => "学风" },
+          { :name => "生活习惯" },
         ]
         CommentType.destroy_all
         cmts = CommentType.create(cmtses)
         CommentType.first.comments << Comment.limit(3).order("id ASC")
         CommentType.last.comments << Comment.limit(3).order("id DESC")
+
+        puts "=== creating user data === "       
+        User.create(:email => "houzi@qq.com", :password => "000000")
 
       rescue Exception => e
         puts "--------errors: #{e}---------"
@@ -102,4 +107,5 @@ namespace :data do
       end
     end
   end
+
 end

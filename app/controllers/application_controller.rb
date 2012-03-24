@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
-  #目前暂时取消登录界面
-  #before_filter :authenticate_user!
+  before_filter :authenticate_user!
   layout :render_by_login_session
   protect_from_forgery
 
