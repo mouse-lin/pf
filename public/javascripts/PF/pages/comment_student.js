@@ -189,6 +189,10 @@ Pf.classes.commentStudent.MainPanel = Ext.extend(Ext.Panel, {
               },
           ],
           buttonAlign: 'center',
+          bbar : [ 
+              //{ text : '上一个', icon : Pf.Icon.Fornt, handler : scope.getStudent("fornt") },
+              //{ text : '下一个', icon : Pf.Icon.Next, handler : scope.getStore("next") },
+          ],
           buttons: [
               { text : '保存', handler : function() { scope.saveComment() } },
               { text : '清除', handler : function() { scope.addComment("",true) } },

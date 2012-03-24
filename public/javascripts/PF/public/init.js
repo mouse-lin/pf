@@ -12,4 +12,5 @@ Pf.Icon = {
     Up    : '/images/icon/upload.gif',
     Ue    : '/images/icon/user_edit.png',
     AUe   : '/images/icon/user_add.png',
+    Upload   : '/images/icon/upload.png',
 }

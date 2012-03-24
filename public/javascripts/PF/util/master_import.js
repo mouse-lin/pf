@@ -3,7 +3,7 @@ Pf.util.ImportXlsBtn = Ext.extend(Ext.Button,{
     constructor : function(config){
         Ext.applyIf(config,{
             text : '导入',
-            icon : Pf.Icon.Add
+            icon : Pf.Icon.Upload
         });
         this.importWin = this.createUploadWin();  /*导入窗口*/
         this.handler = function() {this.importWin.show();};
