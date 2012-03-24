@@ -21,8 +21,12 @@ Pf::Application.routes.draw do
       get "index"
       get "classes"
       get "get_course"
+      get "comment"
+      get "comment_type"
       post "destroy_classes"
       post "destroy_course"
+      post "destroy_comment"
+      post "destroy_comment_type"
       post "ajax_request"
     end
   end

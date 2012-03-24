@@ -31,7 +31,7 @@ class SettingsController < ApplicationController
     render_json "success"
   end
 
-  #保存更新班级科目信息
+  #保存更新班级科目信息 | 评语类别、评语 添加更新
   def ajax_request 
     if params[:action_type] == "create"
       params[:object_type].constantize.create(params[:form_data])
@@ -41,4 +41,32 @@ class SettingsController < ApplicationController
     render_json "success"
   end
 
+  def comment
+    respond_to do |wants|
+      wants.html 
+      wants.json do
+        comments = Comment.all.collect &fields_provider
+        render_json comments
+      end
+    end
+  end
+
+  def comment_type
+    if fields_provider
+      comment_types = CommentType.all.collect &fields_provider
+    else
+      comment_types = CommentType.all
+    end
+    render_json comment_types
+  end
+
+  def destroy_comment
+    Comment.find(params[:id]).delete
+    render_json "success"
+  end
+
+  def destroy_comment_type
+    CommentType.find(params[:id]).delete
+    render_json "success"
+  end
 end
