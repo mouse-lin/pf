@@ -59,4 +59,5 @@ class StudentsController < ApplicationController
   def print
     @student = Student.find(params[:id])
   end
+
 end

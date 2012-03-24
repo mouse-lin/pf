@@ -16,39 +16,38 @@ Pf.settings.homeIndex = {
             Ext.getCmp("identityType").disable();
         });
 
-        var panel = new Ext.TabPanel({ 
+        //tabPanel更换为Panel
+        var panel = new Ext.Panel({ 
             autoScroll : true,
-            activeTab: 0,
-            frame: true,
-            items: [
-                { title:  "学生主档", 
-                    layout: "border",
-                    items: [
-                        {region: "center",layout: "border",  items: grid },
-                        {region:"east",width: 500,layout: "border", items:new Ext.Panel({
-                            layout: "border",
-                            region: "center",
-                            tbar: [{ 
-                                 iconCls: "add",
-                                 text: "添加",
-                                 handler: function(){
-                                     Ext.Msg.confirm('提示', "是否确定保存?", function(button){ 
-                                        if(button != "no"){
-                                            if(Ext.getCmp("studentNumber").getValue() != "" &&  Ext.getCmp("studentName") != "" )
-                                            { 
-                                                _this.studentUpdateOrSave("create");
-                                            }
-                                            else
-                                                Ext.Msg.alert("提示"," 姓名和学号不能为空!") 
+            layout: "border",
+            items: [{ 
+                region: "center",
+                title:  "学生(成绩)主档", 
+                layout: "border",
+                items: [
+                    {region: "center",layout: "border",  items: grid },
+                    {region:"east",width: 500,layout: "border", items:new Ext.Panel({
+                        layout: "border",
+                        region: "center",
+                        tbar: [{ 
+                             iconCls: "add",
+                             text: "添加",
+                             handler: function(){
+                                 Ext.Msg.confirm('提示', "是否确定保存?", function(button){ 
+                                    if(button != "no"){
+                                        if(Ext.getCmp("studentNumber").getValue() != "" &&  Ext.getCmp("studentName") != "" )
+                                        { 
+                                            _this.studentUpdateOrSave("create");
                                         }
-                                     })
-                                 }
-                             }],
-                            items: [ studentDetailFormPanel, studentScoreGrid]   
-                        })}
-                    ]
-                },
-                { title:  "学生主档", html: "mouse"  },
+                                        else
+                                            Ext.Msg.alert("提示"," 姓名和学号不能为空!") 
+                                    }
+                                 })
+                             }
+                         }],
+                        items: [ studentDetailFormPanel, studentScoreGrid]   
+                    })}
+                ]},
             ]
         });
         return panel;
@@ -67,12 +66,18 @@ Pf.settings.homeIndex = {
             root : 'root',
             url  : '/homes/student_score.json',
         });
+
+        function disableRender(value,metaData){ 
+            metaData.attr = 'style="background-color: #e1e2e4"';
+            return value;
+        };
+
         var cm = new Ext.grid.ColumnModel([
             new Ext.grid.RowNumberer(),
-            { header: '学期', sortable: true, dataIndex: 'grade'},
-            { header: '科目', sortable: true, dataIndex: 'course/name'},
+            { header: '学期', sortable: true, dataIndex: 'grade', renderer: disableRender},
+            { header: '科目', sortable: true, dataIndex: 'course/name', renderer: disableRender},
             { header: '成绩', sortable: true, dataIndex: 'score',editor:new Ext.form.NumberField() },
-            { header: '备注', width: 150,sortable: true, dataIndex: 'remark'},
+            { header: '备注', width: 150,sortable: true, dataIndex: 'remark', renderer: disableRender},
         ]);
         var grid = new Ext.grid.EditorGridPanel({ 
             id: "studentCourseScore",
@@ -106,7 +111,6 @@ Pf.settings.homeIndex = {
                     }
                 }
             }],
-           //bbar : new Pf.util.Bbar({ store : studentScoreStore }),
         });
         return  grid;
     },
@@ -233,11 +237,7 @@ Pf.settings.homeIndex = {
                       allowBlank: false,
                   },
                   classCombox,
-                 // { 
-                 //     fieldLabel: "班级",
-                 //     name: "classes/name"
-                 // },
-                     sexCombo,
+                  sexCombo,
                   { 
                       fieldLabel: "联系电话",
                       name: "phone"
@@ -265,8 +265,8 @@ Pf.settings.homeIndex = {
         return formPanel;
     },
       
+    //学生保存或者更新触发函数
     studentUpdateOrSave: function(type){ 
-        //保存更新按钮
         function request(record,grid){ 
             if(record == undefined)
                 record = { data:{ id: "save" } };

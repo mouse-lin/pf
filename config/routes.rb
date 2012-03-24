@@ -15,11 +15,18 @@ Pf::Application.routes.draw do
       get 'commets_by_type'
     end
   end
+
   resources :settings do
     collection do
       get "index"
+      get "classes"
+      get "get_course"
+      post "destroy_classes"
+      post "destroy_course"
+      post "ajax_request"
     end
   end
+
   resources :students do
     collection do
       get "get_all_students"
