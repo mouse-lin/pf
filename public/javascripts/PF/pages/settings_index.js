@@ -86,9 +86,8 @@ Pf.settings.homeIndex = {
             cm: cm,
             height: 230,
             region: "south",
-            tbar: [{ 
-                iconCls:"add", text:"成绩录入",handler: function(){   alert("niaho") }
-            },{ 
+            tbar: [ 
+            { 
                 iconCls:"table_edit", text:"成绩更新",handler: function(){  
                     var jsonData = Ext.getCmp("studentCourseScore").store.getModifiedRecords();
                     if(!jsonData[0]){ Ext.Msg.alert("提示","没有需要更新的数据"); }
